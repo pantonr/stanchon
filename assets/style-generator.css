@@ -1,0 +1,247 @@
+  @font-face {
+  font-family: "NeueHaas95Blk";
+  src:
+    url("https://cdn.shopify.com/s/files/1/0806/7350/5591/files/be460a194c77a4f4f22f4a0c476dcf97.woff2?v=1767901373") format("woff2"),
+    url("https://cdn.shopify.com/s/files/1/0806/7350/5591/files/be460a194c77a4f4f22f4a0c476dcf97.woff?v=1767901373") format("woff");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+.color-wrap {
+ 
+  display: flex;
+  align-content: center;
+}
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: #f5f5f5;
+  margin: 0;
+  padding: 20px;
+}
+
+.page-container {
+ 
+  margin: 0 auto;
+}
+
+.page-title {
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 2.5em;
+  color: #333;
+}
+
+.generators-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.generator-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  padding: 15px;
+  min-height: 400px;
+}
+
+.controls-compact {
+  margin-bottom: 15px;
+}
+
+.control-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+  align-items: flex-end;
+}
+
+.control-mini {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.control-mini label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #666;
+  white-space: nowrap;
+}
+
+.input-mini, .select-mini {
+  padding: 4px 6px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  font-size: 12px;
+  height: 28px;
+}
+
+.color-mini {
+  width: 100%;
+  height: 28px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  padding: 0;
+  cursor: pointer;
+}
+
+.btn-mini {
+  background: #2ecc71;
+  color: white;
+  border: none;
+  padding: 0 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 11px;
+  height: 28px;
+  white-space: nowrap;
+}
+
+.btn-mini:hover {
+  background: #27ae60;
+}
+
+.letter-container-mini {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+#letterBoard1::after, #letterBoard2::after, #letterBoard3::after, #letterBoard4::after {
+    display: none;
+}
+
+.letter-board-mini {
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(0,0,0,.8);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.letter-board-mini svg {
+  width: 100%;
+  height: 100%;
+}
+
+@media (max-width: 1200px) {
+  .generators-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+}
+
+.color-mini {
+  max-width: 50%;
+}
+/* normalize all controls */
+.input-mini,
+.select-mini,
+.color-mini,
+.btn-mini {
+  box-sizing: border-box;
+  height: 28px;
+  line-height: 26px;
+}
+
+/* strip native select UI */
+.select-mini {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+
+  padding: 4px 24px 4px 6px;   /* leave room for arrow */
+  background-color: #fff;
+
+  /* custom arrow */
+  background-image:
+    linear-gradient(45deg, transparent 50%, #555 50%),
+    linear-gradient(135deg, #555 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 8px) 50%;
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+}
+
+  
+.color-reset {
+  color: white !important;
+  background: #5c5c5c !important;
+  border-radius: 50px !important;
+  width: 28px !important;
+  border: none !important;
+  margin-left: 1px !important;
+}
+.select-mini {
+  line-height: 1em;
+}
+
+#downloadBtn1 {
+  padding: 4px;
+  
+}
+
+
+  .page-container{
+  position: relative;
+  isolation: isolate; /* makes z-index behave */
+}
+
+/* Full-bleed background layer */
+.page-container::before{
+  content:"";
+  position: absolute;
+  inset: 0;
+  left: 50%;
+  width: 100vw;
+  transform: translateX(-50%);
+  z-index: -1;
+  pointer-events: none;
+
+  /* PUT YOUR FULL-WIDTH BACKGROUND HERE */
+  background: linear-gradient(135deg, rgb(0, 78, 146), rgb(0, 180, 219), rgb(249, 212, 35));
+  margin-bottom: -3em !important;
+}
+
+  .generators-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  width: 70vw;
+  margin-left: -15vw;
+}
+
+  
+  body {
+    padding: 0 !important;
+  }
+
+
+  .color-wrap input {
+  padding: 0 !important;
+}
+
+  
+h2.page-title {
+  padding-top: 1em !important;
+  color: white;
+}
+
+  .color-reset {
+  width: 22px !important;
+  height: 22px !important;
+  min-width: 22px !important;
+  min-height: 22px !important;
+  flex: 0 0 22px !important;
+  padding: 0 !important;
+  border-radius: 50% !important;
+    margin-top: 4px !important;
+}
+  
