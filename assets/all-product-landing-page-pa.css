@@ -1,0 +1,43 @@
+more-payment-options-link {
+  display: none;
+}
+
+.product_meta {
+  line-height: 1.2em;
+  font-size: 12px;
+}
+.product_meta {
+  width: 50%;
+  float: left;
+}
+.flex.wrap.fl_between.al_center.price-review #price_ppr {
+  font-size: 3em;
+  display: flex;
+  line-height: 1em;
+}
+h1.product_title.entry-title {
+  font-size: 33px !important;
+  line-height: 1.2em;
+}
+.product_meta span span {
+  font-weight: normal;
+}
+.product_meta span {
+  font-weight: bold;
+}
+*[data-ani],
+*[data-ani="heartBeat"] {
+    animation: none !important;
+    -webkit-animation: none !important;
+}
+ul.swatches-select .swatch__value_pr {
+  padding: 0 2em !important;
+}
+
+#price_ppr {
+  font-family: georgia;
+}
+.flickity-slider > span {
+  height: 100%;
+}
+ 
