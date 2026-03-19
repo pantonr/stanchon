@@ -1,0 +1,23 @@
+{% if collection.filters != empty %}
+  <div class="shopify-filters">
+    {% for filter in collection.filters %}
+      <div class="shopify-filter">
+        <h4>{{ filter.label }}</h4>
+        <ul>
+          {% for value in filter.values %}
+            <li>
+              <label>
+                <input type="checkbox"
+                       name="{{ filter.param_name }}"
+                       value="{{ value.value }}"
+                       {% if value.active %}checked{% endif %}
+                       {% if value.count == 0 and value.active == false %}disabled{% endif %}>
+                {{ value.label }} ({{ value.count }})
+              </label>
+            </li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}

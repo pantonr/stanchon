@@ -1,0 +1,67 @@
+{% comment %}
+  Business Information Snippet
+  Usage: {% render 'business-info', type: 'hours' %}
+  Available types: hours, phone, email, address, phone-link, email-link, full-address, schema
+{% endcomment %}
+
+{% case type %}
+
+  {% when 'hours' %}
+    Monday - Friday: 9:00 AM - 5:00 PM EST
+
+  {% when 'phone' %}
+    401-600-9400
+
+  {% when 'phone-formatted' %}
+    +1-401-600-9400
+
+  {% when 'phone-link' %}
+    <a href="tel:+14016009400">401-600-9400</a>
+
+  {% when 'email' %}
+    info@stanchon.com
+
+  {% when 'email-link' %}
+    <a href="mailto:info@stanchon.com">info@stanchon.com</a>
+
+  {% when 'address' %}
+    64 Church St. Unit 1, Warren, RI 02885
+
+  {% when 'full-address' %}
+    64 Church St. Unit 1<br>
+    Warren, Rhode Island 02885<br>
+    United States
+
+  {% when 'schema' %}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Stanchon Hardware",
+      "description": "Your trusted source for innovative and high-quality hardware products in the United States.",
+      "url": "https://stanchon.com",
+      "telephone": "+1-401-600-9400",
+      "email": "info@stanchon.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "64 Church St. Unit 1",
+        "addressLocality": "Warren",
+        "addressRegion": "RI",
+        "postalCode": "02885",
+        "addressCountry": "US"
+      },
+      "openingHours": ["Mo-Fr 09:00-17:00"],
+      "openingHoursSpecification": [{
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+        "opens": "09:00",
+        "closes": "17:00"
+      }],
+      "areaServed": {
+        "@type": "Country",
+        "name": "United States"
+      }
+    }
+    </script>
+
+{% endcase %}
