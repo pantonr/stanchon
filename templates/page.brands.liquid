@@ -1,0 +1,94 @@
+{%- liquid
+section 'pages_heading'
+assign p_handle = 't4_brands_' | append:page.handle
+assign brand_mn = linklists[p_handle].links
+if brand_mn.size == 0
+  assign brand_mn = linklists['t4_brands_page'].links
+endif
+assign html_title = '' -%}
+
+<div class="container mt__35 mb__100">
+{%- for i in (1..1) -%}
+{%- if brand_mn.size == 0 %}{% break %}{% endif -%}
+  <style>
+  button.btn-t4s {
+    position: relative;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    line-height: 100%;
+    margin: 0;
+    padding: 10px 20px;
+    min-height: auto;
+    border: 0;
+    background-color: transparent;
+    color: #878787;border-radius: 0;
+    box-shadow: inset -1px -1px #eee, -1px -1px #eee;
+  }
+  button.btn-t4s:not(.btn-t4s-first):not(.btn-t4s-haschild) {
+    pointer-events: none;
+    text-decoration: line-through;
+  }
+  button.btn-t4s:not(.btn-t4s-first):not(.btn-t4s-haschild) span{
+    opacity: .5;
+  }
+  button.filter-t4s-active {
+    color: #222;
+    background-color: #f5f5f5;
+  }
+  button.btn-t4s:focus, button.btn-t4s:hover {
+    color: #222;
+  }
+  .brands_page_item {
+    box-shadow: inset -1px -1px #eee, -1px -1px #eee;
+  }
+  .brands_page_inner {
+    padding: 15px 5px;
+  }
+  .brands_page_item ul {
+    list-style: square;
+    padding-left: 20px;
+    line-height: 1.6;
+  }
+  .brands_page_item h4 {
+    margin: 0 0 15px;font-size: 16px;
+  }
+  @media (min-width: 768px) {
+    .brands_page_inner {
+      padding: 20px 5px;
+    }
+  }
+  </style>
+   {%- capture getContentHTML -%}
+     {%- for link in brand_mn -%}
+         {%- liquid
+         assign ltt = link.title
+      assign ltt_handle = ltt | handle
+      if link.url contains '#*'
+          assign cl_btn = ' btn-t4s-haschild'
+          assign ltt_handle = 'allt4s'
+      elsif link.links != blank
+          assign cl_btn = ' btn-t4s-haschild'
+      else
+          assign cl_btn = ''
+      endif
+      if forloop.first
+         assign cl_btn = cl_btn | append:' filter-t4s-active'
+      endif
+      assign item_title = '<button class="cg btn-t4s' | append:cl_btn | append:'" data-filter=".filter_' | append:ltt_handle | append:'"><span>'| append:ltt | append:'</span></button>'
+      assign html_title = html_title |append:item_title -%}
+
+         {%- if link.links != blank %}
+         <div class="brands_page_item col-6 col-md-6 col-lg-3 filter_allt4s filter_{{ltt_handle}}"><div class="brands_page_inner">
+            <h4>{{ltt}}</h4>
+            <ul>{%- for child_link in link.links -%}<li><a href="{{ child_link.url }}">{{ child_link.title }}</a></li>{%- endfor -%}</ul>
+         </div></div>
+         {%- endif -%}
+
+     {%- endfor -%}
+   {%- endcapture -%}
+
+   <div class="nt_filteriso_js brands_filter blg_count_true fwm tc mb__35">{{html_title}}</div>
+   <div class="brands_page_holder row js_isotope nt_isotope" data-isotope='{ "itemSelector": ".brands_page_item", "layoutMode": "masonry","columnWidth":".grid-sizer","rtl": {{settings.use_rtl}} }'><div class="col-6 col-md-6 col-lg-3 grid-sizer"></div>{{getContentHTML}}</div>
+{%- endfor -%}
+</div>

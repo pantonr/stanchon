@@ -1,0 +1,37 @@
+{%- liquid 
+  layout none
+  assign pr_id = product.id
+  assign pr_url = product.url | within: collection
+  assign images_0 = product.images[0] | default:settings.placeholder_img
+  assign des_btns_pr = settings.des_btns_pr
+  if des_btns_pr == '1'
+    assign tooltip2 = "ttip_nt tooltip_top_left"
+  else
+    assign tooltip2 = "ttip_nt tooltip_top"
+  endif
+  if product.has_only_default_variant == false and settings.show_pr_size
+    assign ck_s = false
+    assign size_ck = settings.size_ck | append:',size,sizes,Größe' 
+    assign get_size = size_ck | downcase | replace: ' ,', ',' | replace: ', ', ',' | split: ',' | uniq
+    for option in product.options_with_values 
+      assign name = option.name | downcase 
+      if get_size contains name 
+        assign ck_s = true 
+        assign pr_option = 'option'| append:forloop.index 
+        if settings.show_size_type == '1'
+          assign size_variants = product.variants | map:pr_option | uniq
+        else
+          assign size_variants = product.variants | where: "available" | map:pr_option | uniq
+        endif
+        break 
+      endif 
+    endfor
+  endif -%}
+{%- capture url_last -%}{{product.url | split:'/products/' | first}}{% if collection %}/collections/{{collection.handle}}{% endif %}/products/{{product.handle}}{%- endcapture -%}
+
+{%- if images_0 != blank -%}{%- if settings.show_pr_img == '2' -%}{%- render 'pr_img_2_equal',product:product,url_last:url_last -%}{%- else -%}{%- render 'pr_img_equal',product:product,url_last:url_last -%}{%- endif -%}{%- endif -%}
+{%- assign tooltip = "ttip_nt tooltip_right" -%}{%- render 'nt_add_w',product:product,tooltip:tooltip,url_last:url_last -%}
+<div class="hover_button op__0 tc pa flex column ts__03 des_btns_pr_{{des_btns_pr}} has_sizelistt4_{{ck_s}}{% if settings.use_quickview and settings.hide_btns == false %} has_2btnst4_pr{% endif %}">
+{%- render 'nt_add_qvcp',product:product,tooltip:tooltip2,pr_id:pr_id,url_last:url_last -%}{% unless settings.hide_btns %}{%- render 'nt_add_btn',product:product,tooltip:tooltip2,url_last:url_last -%}{%- endunless -%}
+</div>
+{%- if ck_s %}<div class="product-attr pa ts__03 cw op__0 tc pe_none"><p class="truncate mg__0 w__100">{{size_variants | join: ", "}}</p></div>{% endif -%}

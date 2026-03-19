@@ -1,0 +1,326 @@
+{%- comment -%}
+  Simplified product template - Layout 4 (3-column) only
+{%- endcomment -%}
+
+{%- liquid
+  assign img_zoom_size = 'master'
+  assign img_size = product.images.size
+  assign eq_imgtb = settings.ratio_img_main
+  assign sett_pr = settings.design_products
+  assign des_pr_layout = settings.des_pr_layout
+  assign image = product.images[0] | default:settings.placeholder_img
+
+  case sett_pr
+    when '2'
+     assign singles_sp = 'sp-single-2'
+     assign cl_tb = '2'
+    when '3'
+     assign singles_sp = 'sp-single-3'
+     assign cl_tb = '3'
+    when '7'
+     assign singles_sp = 'sp-single-7'
+     assign cl_tb = '7'
+    when '4'
+     assign singles_sp = 'sp-single-4'
+     assign cl_tb = 'bottom'
+    when '5'
+     assign singles_sp = 'sp-single-5'
+     assign cl_tb = 'right'
+    when '6'
+     assign singles_sp = 'sp-single-6'
+     assign cl_tb = 'none'
+    else
+     assign singles_sp = 'sp-single-1'
+     assign cl_tb = 'left'
+  endcase
+
+  assign class_images = 'col-md-5'
+  assign class_product_info = 'col-md-4'
+  assign class_purchase = 'col-md-3'
+  assign zoom_tp = settings.zoom_tp
+  assign pr_media = product.media
+  assign currently_var = product.selected_or_first_available_variant
+  assign cur_var_id = currently_var.id
+  assign pid = product.id
+  assign hd_up = 'fbt-' |append:pid
+  assign fbt_tag = product.tags| where:'fbtt4_' | first | default:hd_up | remove:'fbtt4_'
+  assign nav_up = linklists[fbt_tag].links | where:'type','product_link'
+  assign nav_up_size = nav_up.size 
+  if product.available == false or settings.fbt_pos == '2'
+    assign nav_up_size = 0
+  endif
+  assign ck_next_pr = false
+  if settings.back_next_pr and collection != blank
+  assign ck_next_pr = true
+  endif -%}
+
+<div class="sp-single {{singles_sp}} des_pr_layout_{{des_pr_layout}} mb__60">
+  {%- if ck_next_pr or settings.breadcrumb_pr -%}
+  <div class="bgbl pt__20 pb__20 lh__1 breadcrumb_pr_wrap">
+   <div class="container">
+    <div class="row al_center">
+      <div class="col">{% if settings.breadcrumb_pr %}<nav class="sp-breadcrumb"><a href="{{ routes.root_url }}" class="dib">{{ 'general.breadcrumbs.home' | t }}</a>{% if collection.url != blank %}<i class="facl facl-angle-right"></i><a href="{{collection.url}}" class="dib">{{collection.title}}</a>{% endif %}<i class="facl facl-angle-right"></i>{{product.title}}</nav>{% endif %}</div>
+      {%- if ck_next_pr -%}
+      <div class="col-auto flex al_center">
+        {%- assign next_pr = collection.next_product -%}
+        {%- assign prev_pr = collection.previous_product -%}
+        
+        {%- if prev_pr -%}<a href="{{prev_pr.url}}" class="pl__5 pr__5 fs__18 cd chp ttip_nt tooltip_bottom_left"><i class="las la-angle-left"></i><span class="tt_txt">{{prev_pr.title}}</span></a>{%- endif -%}
+        <a href="{{collection.url}}" class="pl__5 pr__5 fs__20 cd chp ttip_nt tooltip_bottom_left"><i class="fwb iccl iccl-grid fs__15"></i><span class="tt_txt">{{'products.product.back_to' | t:title:collection.title}}</span></a>
+        {%- if next_pr -%}<a href="{{next_pr.url}}" class="pl__5 pr__5 fs__18 cd chp ttip_nt tooltip_bottom_left"><i class="las la-angle-right"></i><span class="tt_txt">{{next_pr.title}}</span></a>{%- endif -%}
+      </div>
+      {%- endif -%} 
+    </div>
+   </div>
+  </div>
+  {%- endif -%} 
+
+  <div class="container container_cat cat_{{settings.pr_layout}}">
+    <div class="row product mt__40" id="product-{{product.id}}" data-featured-product-se data-id="_ppr">
+      <div class="col-12 thumb_{{cl_tb}}">
+        <div class="row mb__50 pr_sticky_content">
+<!-- leave title here -->
+     
+        
+<div class="testslide">
+</div>
+<div class="testslide2">
+</div>
+
+<div class="theleftside">
+<div class="titleholder"><h1 class="product_title entry-title" style="font-size: {{bk_stts.size}}px">Go/No-Go Magnets<br>Double-Sided Indicator Magnets<br>Various Colors</h1>
+
+
+
+         <div class="smallertextintro">Track progress with ease:<br>rooms availability, machine operability<br> and so much more with ease with our indicator magnets</div>
+          </div>
+
+          <!--
+old line looked like: 
+          <div class="class_images col-12 pr product-images img_action_{{settings.main_click}} pr_sticky_img" data-pr-single-media-group>
+        -->
+            <div class="pr product-images img_action_{{settings.main_click}} pr_sticky_img" data-pr-single-media-group>
+
+
+              
+            <div class="row theiaStickySidebar">
+              {%- if image != blank and pr_media.size < 2 -%}{%- assign ratio = image.aspect_ratio -%}{%- assign iw = image.width -%}
+                <div class="col-12">
+                  <div class="p-thumb images sp-pr-gallery equal_nt {{settings.img_size_main}} {{settings.ratio_img_main}} position_{{settings.img_pos_main}}">
+                    <div {% if image.alt contains 'imgt4_colorsolid' %}data-widths="[1]" {% endif %}class="img_ptw p_ptw p-item sp-pr-gallery__img w__100 nt_bg_lz lazyloadt4s" data-bgset="{{ image | img_url: '1x1' }}" data-ratio="{{ratio}}" data-sizes="auto" data-vid="{{image.variants.first.id}}" id="imgpr_{{ image.id }}" data-src="{{ image | img_url: img_zoom_size }}" data-width="{{ image.width }}" data-height="{{ image.height }}" data-cap="{{ alt | split:'|' | last | escape }}"{% if eq_imgtb == 'ratio_imgtrue' or true %} style="padding-top:{{ 1 | divided_by: ratio | times: 100}}%;"{% endif %}>
+                      <img class="op_0 dn" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="{{ alt | split:'|' | last | escape }}">
+                    </div>
+                  </div>
+                  {%- render 'product_labels',on:'singe' -%}
+                  {%- render 'p_group_btns' -%}
+                </div>
+              {%- elsif pr_media.size > 0 -%}
+                {%- render 'page_pr_img',call_cl:'_ppr',pr_media:pr_media,sett_pr:sett_pr,eq_imgtb:eq_imgtb,e_imgnv:settings.ratio_img_thumb -%}
+              {%- endif -%}
+              {%- if zoom_tp == '2' %}<div class="dt_img_zoom pa t__0 r__0 dib"></div>{% endif -%}
+            </div>
+          </div>
+
+          </div><!-- left side -->
+
+
+
+          
+          {%- if settings.size_img_pr == '4' -%}
+            <!--<div class="{{class_product_info}} col-12 product-basic pr_sticky_su">
+              <div class="theiaStickySidebar">
+              </div>
+            </div>-->
+            <div class="{{class_purchase}} col-12 product-purchase pr_sticky_su">
+              <div class="theiaStickySidebar">
+                {%- section 'pr_summary_purchase_magnet_builder' -%}
+              </div>
+            </div>
+            <!-- Full Description Row Below 3-Column Layout -->
+            <div class="col-12 product-full-description mt__30">
+              <div class="pr_long_des rtet4">
+                {{ product.description }}
+              </div>
+            </div>
+          {%- endif -%}
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+<!-- the title is in here -->
+       {%- section 'pr_summary_info_magnet_builder' -%}
+
+
+
+  {%- if nav_up_size > 0 %}<div id="wrap_fbt" class="container">{%- render 'fbt_snipet',nav_up:nav_up,currently_var:currently_var,cur_var_id:cur_var_id,pid:pid -%}</div>{% endif -%}
+
+  {%- if des_pr_layout == '1' %}
+    <div id="wrap_des_pr"><div class="container container_des">{%- section 'pr_description' -%}</div></div>
+  {%- else -%}
+    <div id="wrap_des_pr"><div class="container container_des">
+      {%- assign reviews = product.metafields.custom.really_really_simple_reviews.value -%}
+      {%- if reviews and reviews.size > 0 -%}
+        {%- render 'product_reviews_only', reviews: reviews -%}
+      {%- endif -%}
+    </div></div>
+  {% endif -%}
+
+  <style>
+    .col-md-3.col-12.product-purchase.pr_sticky_su {
+      min-width: 620px;
+    }
+
+    .product_title.entry-title {
+  font-family: 'Poppins';
+  line-height: .8em;
+ 
+ margin-bottom: 0 !important;
+  font-size: 3em !important;
+  letter-spacing: -3px;
+}
+
+.smallertextintro {
+  font-weight: 300;
+}
+.titleholder {
+padding: 1em;
+margin-top: 3em;
+}
+
+.flickity-viewport {
+  margin: fds;
+  margin-top: -21%;
+}
+.titleholder {
+ 
+position: relative;
+z-index: 3;
+}
+
+.testslide {
+ position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
+  height: 400px;
+
+  z-index: 3;
+}
+
+.testslide {
+  position: relative;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.testslide::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -200px;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(-10deg, transparent 50%, rgba(0,0,0,.2) 50%);
+  transform: translateX(0px);
+  z-index: -1;
+}
+
+
+.theleftside {
+max-width: 60%; 
+width: 60%; 
+mix-blend-mode: multiply;
+}
+
+
+
+.testslide::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -200px;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(-10deg, 
+    transparent 0%, 
+  rgba(0,0,0,0.05) 30%,
+    rgba(0,0,0,0.2) 50%,
+    rgba(0,0,0,0.03) 65%,
+    rgba(0,0,0,0.01) 75%,
+    transparent 90%
+  );
+  transform: translateX(0px);
+  z-index: -1;
+}
+
+.theleftside {
+ 
+  max-width: 60%;
+  
+ 
+}
+
+
+.bgbl.pt__20.pb__20.lh__1.breadcrumb_pr_wrap {
+  padding: fds;
+  position: relative;
+  z-index: 2;
+}
+
+#nt_content {
+  background: uyello;
+  background: rgba(0,0,0,.03);
+}
+
+
+.smallertextintro {
+ 
+ 
+  left: 39px;
+  position: relative;
+ 
+  margin-top: .8em;
+}
+
+
+
+#callBackVariant_ppr {
+  background: rgba(255, 255, 255, 0.5);
+  position: relative;
+  z-index: 9;
+}
+
+
+.testslide2 {
+ 
+ 
+  float: left;
+ 
+  display: flex;
+  top: 400px;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+ 
+background: linear-gradient(to right, rgba(0,0,0,0.09) 0%,rgba(0,0,0,0.05) 25%,rgba(0,0,0,0.03) 100%);
+
+}
+
+
+
+  </style>
+
+  {%- section 'product-recommendations' -%}
+  {%- section 'recently_viewed' -%}
+</div>
+
+{% section 'ali-reviews-review-box' %}

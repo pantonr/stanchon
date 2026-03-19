@@ -1,0 +1,25 @@
+{%- liquid
+	layout none
+	assign limit = 5
+	assign results_count = search.results_count
+	assign search_terms = search.terms |split:'product_type:' | first | strip -%}
+
+{%- if results_count > 0 %}
+{%- paginate search.results by 100 -%}
+   <h4>{{ 'general.search.results_blog_page' | t: terms: search_terms, count: results_count }}</h4>
+   <ul class="ul_none">{%- for item in search.results %}<li><a class="db" href="{{item.url}}">{% if item.object_type == 'page' %}<i class="las la-file"></i>{% else %}<i class="las la-newspaper"></i>{% endif %} {{item.title | highlight:search_terms}}</a></li>{% endfor -%}</ul>
+{%- endpaginate -%}
+{% endif %}
+<style>
+@media (min-width: 768px){
+	.container_cat .results_article_blog ul {
+		display: -ms-flexbox;display: flex;-ms-flex-wrap: wrap;flex-wrap: wrap;margin-top: 10px;
+   } 
+   .container_cat .results_article_blog ul>li {
+	  -ms-flex: 0 0 50%;flex: 0 0 50%;max-width: 50%;width: 100%;
+   }
+   .results_article_blog a {
+	   border: 0;box-shadow: inset -1px -1px rgba(119,119,119,0.15), -1px -1px rgba(119,119,119,0.15);
+	}
+}
+</style>
