@@ -1,0 +1,9 @@
+<link rel="stylesheet" href="{{ 'style-generator.css' | asset_url }}">
+
+<script src="{{ 'safety-letter-generator.js' | asset_url }}" defer="defer"></script>
+
+<style>
+  /* Fix for Google: Ensure the container has height even before JS loads */
+  .letter-board-mini { min-height: 300px; display: flex; align-items: center; justify-content: center; background: #fafafa; }
+  .letter-board-mini::after { content: "Loading Generator..."; color: #999; font-size: 14px; }
+</style>

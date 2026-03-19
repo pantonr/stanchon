@@ -1,0 +1,366 @@
+{%- liquid
+	assign color_ck = settings.color_ck | append:',color,colors,couleur,colour' 
+	assign get_color = color_ck | downcase | replace: ' ,', ',' | replace: ', ', ',' | split: ',' | uniq 
+	assign size = product.options_with_values.size 
+	assign ck = true 
+	assign has_img = block.settings.swatch_style | default: settings.swatch_style
+	if product.tags contains 'sw_imgt4_on'
+	  assign has_img = '2'
+	endif
+	if product.available 
+	  assign remove_soldout = settings.remove_sold_out 
+	else 
+	  assign remove_soldout = false 
+	endif 
+	assign select_id = 'nt_select' | append:call_cl 
+	assign select_class = 'nt_select'| append:call_cl 
+	assign bclass = 'is-selected-none'
+	assign pr_variants = product.variants 
+	assign selected_variant = product.selected_variant
+	case settings.pr_curent
+	  when '1'
+		  assign current_variant = selected_variant 
+		  if current_variant != blank 
+		    assign bclass = 'is-selected-nt' 
+		  endif
+	  when '2' 
+		  assign current_variant = selected_variant |default: pr_variants.first 
+		  assign bclass = 'is-selected-nt' 
+		  if current_variant.available == false and remove_soldout and product.available 
+		    assign current_variant = product.first_available_variant  
+		  endif
+	  else 
+	    assign current_variant = product.selected_or_first_available_variant
+	    assign bclass = 'is-selected-nt'
+	endcase
+
+	if pr_variants.size == 1 
+		assign current_variant = pr_variants.first 
+		assign bclass = 'is-selected' 
+	endif
+	assign choose_an_option = 'products.product.choose_an_option' | t
+	assign img_variants = pr_variants | where: "featured_image" -%}
+
+<div class="fimg_{{settings.use_fimg}} variations mb__40 style__circle size_{{block.settings.swatch_size | default:settings.swatch_size }} style_color des_color_{{block.settings.style_color | default:settings.style_color }} remove_soldout_{{remove_soldout}}">
+	{%- for option in product.options_with_values -%}{%- assign name = option.name | downcase -%}{%- assign svc = '' -%}{%- assign option_index = forloop.index0 -%}{%- assign color_class = '' -%}
+
+		{%- case option_index -%}{%- when 0 -%}{%- assign selected_value = current_variant.option1 |default:choose_an_option -%}{%- when 1 -%}{%- assign selected_value = current_variant.option2 |default:choose_an_option -%}{%- else -%}{%- assign selected_value = current_variant.option3 |default:choose_an_option -%}{%- endcase -%}
+
+	<!-- Add numbered step labels -->
+
+<p>Our durable flip magnets are a great indication tool. Most sizes and shapes ship same day, some variants are made to order. Make your selection for lead times. </p> 
+{%- if option_index == 0 -%}
+  <h3 class="option-step-label the-label-01">
+    <span class="step-number">1.</span> 
+    <span class="step-text">Select your {{ option.name | downcase }}: </span>
+    <span class="selected-value">{{ selected_value }}</span>
+  </h3>
+{%- elsif option_index == 1 -%}
+  <h3 class="option-step-label the-label-02">
+    <span class="step-number">2.</span> 
+    <span class="step-text">Select your {{ option.name | downcase }}: </span>
+    <span class="selected-value">{{ selected_value }}</span>
+  </h3>
+{%- elsif option_index == 2 -%}
+  <h3 class="option-step-label the-label-03">
+    <span class="step-number">3.</span> 
+    <span class="step-text">Select your {{ option.name | downcase }}: </span>
+    <span class="selected-value">{{ selected_value }}</span>
+  </h3>
+{%- endif -%}
+
+		{%- if get_color contains name -%}
+		    {%- if ck and has_img == '2' and img_variants.size > 0 -%}{%- assign color_class = 'fimg_ratio' -%}<div class="lazypreloadt4s nt_pre_img op__0" data-rendert4s="{% if se_id != blank %}{{routes.search_url}}/?section_id={{se_id}}{% else %}{{locale_url}}/products/{{product.handle}}/?view=cl{{call_cl}}{% endif %}"></div>{%- assign ck = false -%}{%- endif -%}
+			<div data-opname="{{option.name | handleize}}" class="{{select_class}}{{ option_index }} {{color_class}} swatch is-color{% cycle ' is-ntcolor','','' %}" id="{{select_id}}_{{ option_index }}">
+				<ul class="swatches-select swatch__list_pr" data-id="{{ option_index }}" data-size="{{size}}">
+			   	   {%- for value in option.values -%}
+			   	      {%- assign vh = value | handle -%}{%- assign sclass = '' -%}{%- if selected_value == value -%}{%- assign sclass = bclass -%}{%- endif -%}
+			   		   <li data-swatch-itemt4 data-index="{{ forloop.index0 }}" data-value='{{ vh }}' class="ttip_nt tooltip_top{%- if forloop.first == true -%}_right{%- endif %} nt-swatch swatch_pr_item bg_css_{{ vh }} {{sclass}}" data-escape="{{ value | escape }}">
+			   		     {%- if option_index == 0 -%}
+			   		       <div class="{{ option.name | handle }} {{ value | handle }}"></div>
+				
+			   		     {%- endif -%}
+			   		     <span class="tt_txt">{{ value }}</span><span class="swatch__value_pr pr bg_color_{{ vh }} lazyloadt4s"></span>
+			   		   </li>
+			   	   {%- endfor -%}
+				</ul>
+			</div>
+		{%- else -%}
+			<div data-opname="{{option.name | handleize}}" class="{{select_class}}{{ option_index }} swatch is-label is-{{option.name | handleize}}" id="{{select_id}}_{{ option_index }}">
+				<ul class="swatches-select swatch__list_pr" data-id="{{ option_index }}" data-size="{{size}}">
+		   	   {%- for value in option.values -%}
+		   	      {%- assign vh = value | handle -%}{%- assign sclass = '' -%}{%- if selected_value == value -%}{%- assign sclass = bclass -%}{%- endif -%}
+		   		   <li data-swatch-itemt4 data-index="{{ forloop.index0 }}" data-value='{{ vh }}' class="nt-swatch swatch_pr_item pr bg_css_{{ vh }} {{sclass}}" data-escape="{{ value | escape }}">
+		   		     {%- if option_index == 0 -%}
+		   		       <div class="{{ option.name | handle }} {{ value | handle }}"></div>
+
+		   		     {%- endif -%}
+		   		     <span class="swatch__value_pr">{{ value }}</span>
+		   		   </li>
+		   	   {%- endfor -%}
+				</ul>
+			</div>
+		{%- endif -%}
+	{%- endfor -%}
+</div>
+
+
+<style>
+	.is-shape .swatch__list_pr {
+ 
+  
+ 
+  
+  display: flex;
+  justify-content: space-evenly;
+}
+.variations.style__circle .swatch.is-label .swatch_pr_item {
+width: 100%;
+}
+.shape {
+  height: 85px;
+}
+.shape {
+  background-size: 130%;
+  background-repeat: no-repeat;
+}
+
+.nt-swatch.swatch_pr_item.pr.is-selected {
+  background: rgba(0,0,0,.1);
+ 
+  border-color: rgba(0,0,0,.15);
+  color: rgba(0,0,0,.8);
+}
+
+.shape.circle {
+   background-image: url("https://cdn.shopify.com/s/files/1/0806/7350/5591/files/circles-magnets-double-sided.png?v=1763872193");
+
+}
+.shape.square {
+   background-image: url("https://cdn.shopify.com/s/files/1/0806/7350/5591/files/squares-magnets-double-sided.png?v=1763872193");
+
+}
+.shape.rectangle {
+   background-image: url("https://cdn.shopify.com/s/files/1/0806/7350/5591/files/rectangles-magnets-double-sided.png?v=1763872193");
+
+}
+.shape.\31 2-long-strips {
+   background-image: url("https://cdn.shopify.com/s/files/1/0806/7350/5591/files/stripes-magnets-double-sided.png?v=1763872192");
+
+}
+
+.shape {
+  background-size: cover;
+  background-position: center;
+  mix-blend-mode: multiply;
+}
+.swatch__value_pr {
+  font-family: 'Poppins';
+  font-weight: 600;
+}
+
+.is-shape .swatch__list_pr {
+  display: flex;
+  justify-content: space-evenly;
+  width: calc(100% - 30px);
+  margin-left: 15px;
+}
+.nt-swatch.swatch_pr_item.pr {
+  margin: 0 !important;
+  border-left: 0 !important;
+  border-radius: 0 !important;
+}
+
+
+.shape {
+  
+}
+
+.step-text {
+ 
+  font-family: 'Poppins';
+  font-weight: 200;
+  font-size: 18px;
+}
+
+.step-number {
+  font-family: 'Poppins';
+  font-size: 18px;
+}
+.option-step-label {
+ 
+  border-bottom: 4px solid black;
+}
+
+.selected-value {
+  font-size: 18px;
+  text-transform: lowercase;
+}
+</style>
+
+
+<script>
+(function() {
+  // CSS for the size dropdown only
+  const css = `
+    /* Target only the third option (size) - index 2 */
+    .nt_select_ppr2.is-size {
+      position: relative;
+    }
+    
+    .nt_select_ppr2.is-size .swatch__title {
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    /* Hide the size swatch list by default */
+    .nt_select_ppr2.is-size .swatches-select {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      z-index: 999;
+      max-height: 250px;
+      overflow-y: auto;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Style the dropdown trigger button for size */
+    .nt_select_ppr2.is-size .dropdown-trigger {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 45px;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      cursor: pointer;
+      padding: 0 15px;
+      font-size: 14px;
+      margin-bottom: 25px;
+    }
+
+    .nt_select_ppr2.is-size .dropdown-trigger::after {
+      content: "▼";
+      font-size: 12px;
+      color: #666;
+      transition: transform 0.2s;
+    }
+
+    .nt_select_ppr2.is-size.dropdown-open .dropdown-trigger::after {
+      transform: rotate(180deg);
+    }
+
+    /* Show dropdown when open */
+    .nt_select_ppr2.is-size.dropdown-open .swatches-select {
+      display: block;
+    }
+
+    /* Style dropdown items */
+    .nt_select_ppr2.is-size .swatches-select li {
+      display: block !important;
+      padding: 16px 15px;
+      cursor: pointer;
+      border-bottom: 1px solid #eee;
+      transition: background-color 0.2s;
+      text-align: left !important;
+    }
+
+    .nt_select_ppr2.is-size .swatches-select li:hover {
+      background-color: #f8f9fa !important;
+      color: #333 !important;
+    }
+
+    .nt_select_ppr2.is-size .swatches-select li:last-child {
+      border-bottom: none;
+    }
+
+    .nt_select_ppr2.is-size .swatches-select li.is-selected {
+      background-color: #e3f2fd !important;
+      font-weight: 600;
+      color: #333 !important;
+    }
+
+    .nt_select_ppr2.is-size .swatches-select li .swatch__value_pr {
+      text-align: left !important;
+      color: #333 !important;
+    }
+  `;
+
+  // Inject CSS
+  const styleElement = document.createElement('style');
+  styleElement.textContent = css;
+  document.head.appendChild(styleElement);
+
+
+  function initSizeDropdown() {
+  // Target specifically the size selector (third option, index 2)
+  const sizeDropdown = document.querySelector('.nt_select_ppr2.is-size');
+  
+  if (!sizeDropdown) {
+    setTimeout(initSizeDropdown, 100);
+    return;
+  }
+
+  // Prevent double initialization
+  if (sizeDropdown.querySelector('.dropdown-trigger')) {
+    return;
+  }
+
+  const trigger = document.createElement('div');
+  trigger.className = 'dropdown-trigger';
+  
+  const selectedItem = sizeDropdown.querySelector('.swatches-select li.is-selected');
+  const selectedText = selectedItem ? selectedItem.querySelector('.swatch__value_pr').textContent : 'Select Size';
+  trigger.textContent = selectedText;
+  
+  // Insert trigger at the beginning of the sizeDropdown div (instead of after swatch__title)
+  const swatchList = sizeDropdown.querySelector('.swatches-select');
+  swatchList.insertAdjacentElement('beforebegin', trigger);
+
+  // Click handler for trigger
+  trigger.addEventListener('click', function(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    sizeDropdown.classList.toggle('dropdown-open');
+  });
+
+  // Click handlers for options
+  const swatchItems = sizeDropdown.querySelectorAll('.swatches-select li');
+  swatchItems.forEach(item => {
+    item.addEventListener('click', function(e) {
+      const selectedText = this.querySelector('.swatch__value_pr').textContent;
+      trigger.textContent = selectedText;
+      sizeDropdown.classList.remove('dropdown-open');
+    });
+  });
+
+  // Close dropdown when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!sizeDropdown.contains(e.target)) {
+      sizeDropdown.classList.remove('dropdown-open');
+    }
+  });
+
+  console.log('Size dropdown initialized');
+}
+
+
+  // Initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSizeDropdown);
+  } else {
+    initSizeDropdown();
+  }
+  
+  setTimeout(initSizeDropdown, 250);
+})();
+</script>
