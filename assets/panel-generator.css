@@ -1,0 +1,898 @@
+.layout {
+  display: flex;
+  margin: 0;
+  padding: 20px;
+}
+ 
+ 
+#new-format {
+  
+  min-height: 40px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  background: #c2c2c2;
+ 
+  
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  margin-bottom: 20px;
+  
+}
+#applyLayoutBtn {
+  display: none; 
+}
+.sidebar {
+  
+  
+  background: #f0f0f0;
+  margin-right: 20px;
+}
+
+
+.control-panel {
+  position: fixed;
+  width: 230px;
+}
+
+#page {
+  width: 8.5in;
+  
+  margin: 0 auto;
+  background: white;
+}
+
+.panel {
+  width: 8in;
+  height: 2in;
+  
+  border: 1px solid #ccc;
+}
+
+.layout {
+  display: flex;
+  margin: 0 20px; /* 20px left and right margins */
+  padding: 20px 0; /* Remove left/right padding, keep top/bottom */
+  width: calc(100% - 40px); /* Full width minus the 20px margins on each side */
+  max-width: none; /* Remove any max-width constraints */
+}
+
+.editor {
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+#printBtn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 20px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+@media print {
+  .sidebar {
+    display: none;
+  }
+  .panel {
+    border: none;
+  }
+}
+
+
+
+
+@media print {
+  .sidebar {
+    display: none;
+  }
+  .panel {
+    border: none;
+  }
+  
+  @page {
+    margin: 0;
+    size: auto;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  header, footer {
+    display: none !important;
+  }
+}
+
+
+.action-btn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background: #2196F3;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.action-btn:hover {
+  background: #0b7dda;
+}
+
+.padding-controls {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #ddd;
+}
+
+.padding-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.padding-inputs div {
+  display: flex;
+  align-items: center;
+}
+
+.pdf-btn {
+  background: #e91e63;
+}
+
+.pdf-btn:hover {
+  background: #c2185b;
+}
+
+.padding-inputs label {
+  flex: 0 0 60px;
+  font-size: 14px;
+}
+
+
+.padding-inputs input {
+  width: 50px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.action-btn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  background: #2196F3;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.action-btn:hover {
+  background: #0b7dda;
+}
+
+#printBtn {
+  background: #4CAF50;
+}
+
+#printBtn:hover {
+  background: #45a049;
+}
+
+
+
+.layout {
+  display: flex;
+   
+  margin: 0;
+  padding: 20px;
+}
+
+.sidebar {
+  width: 400px;
+  padding: 20px;
+  background: #f0f0f0;
+  margin-right: 20px;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* Hide scrollbar but keep scroll functionality */
+.sidebar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+.sidebar::-webkit-scrollbar {
+  display: none; /* Safari and Chrome */
+}
+
+.control-panel {
+  position: relative;
+  width: 100%;
+}
+
+#page {
+  box-sizing: border-box;
+  background: white;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.panel {
+  border: 1px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  background: white;
+}
+
+.editor {
+  flex: 1;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.panel-grid {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+}
+
+.settings-section {
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #ddd;
+}
+
+.setting-group {
+  margin-bottom: 12px;
+}
+
+.setting-group > div {
+  margin-bottom: 8px;
+}
+
+.setting-group label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.setting-group input,
+.setting-group select {
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  width: 100%;
+}
+
+.setting-group input[type="number"] {
+  width: 100%;
+}
+
+.setting-group small {
+  display: block;
+  color: #666;
+  font-size: 12px;
+  margin-top: 2px;
+}
+
+.hidden {
+  display: none;
+}
+
+h3 {
+  margin-top: 25px;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #ddd;
+  color: #333;
+}
+
+h4 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #444;
+}
+
+.padding-controls {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #ddd;
+}
+
+.padding-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.padding-inputs div {
+  display: flex;
+  align-items: center;
+}
+
+.padding-inputs label {
+  flex: 0 0 60px;
+  font-size: 14px;
+}
+
+.padding-inputs input {
+  width: 50px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.action-btn {
+  width: 100%;
+ 
+  margin-top: 10px;
+  background: #2196F3;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background-color 0.2s;
+}
+
+.action-btn:hover {
+  background: #0b7dda;
+}
+
+#printBtn {
+  background: #4CAF50;
+  margin-top: 15px;
+}
+
+#printBtn:hover {
+  background: #45a049;
+}
+
+#applyLayoutBtn {
+  background: #ff9800;
+}
+
+#applyLayoutBtn:hover {
+  background: #e68a00;
+}
+
+.page-header {display: flex; max-width: 600px; margin: 0 auto; text-align: center;}
+
+/* Ensure the page stays centered */
+@media screen and (min-width: 1200px) {
+  .layout {
+    justify-content: center;
+  }
+  .page-header {
+    justify-content: center;
+  }
+  
+  .sidebar {
+    position: sticky;
+    top: 0;
+  }
+}
+
+@media print {
+  .sidebar {
+    display: none;
+  }
+  
+  .panel {
+    border: none;
+  }
+  
+  #page {
+    border: none;
+    box-shadow: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  
+  .layout {
+    padding: 0;
+    margin: 0;
+  }
+}
+
+
+
+.share-btn {
+  background: #9c27b0;
+}
+
+.share-btn:hover {
+  background: #7B1FA2;
+}
+
+
+
+/* Support independent font size control for headings */
+.mce-content-body h1, .mce-content-body h2, .mce-content-body h3, 
+.mce-content-body h4, .mce-content-body h5, .mce-content-body h6 {
+  /* Reset the font size to allow independent control */
+  font-size: inherit;
+}
+
+/* Special styling for editor in general */
+.editor {
+  font-size: 12pt; /* Default font size */
+}
+
+/* Make font size picker dropdown wider to accommodate larger text options */
+.tox-menu.tox-collection.tox-collection--list.tox-selected-menu {
+  min-width: 100px !important;
+}
+
+
+
+
+
+
+
+
+/* ============================================
+   DAISY UI INSPIRED SIDEBAR STYLING
+   ============================================ */
+
+.sidebar {
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.control-panel {
+  padding: 0;
+}
+
+/* Main headings */
+h3 {
+  color: #1e293b;
+  font-weight: 700;
+  font-size: 1.2rem;
+  margin: 0 0 20px 0;
+  padding: 20px 20px 0 20px;
+  border-bottom: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+h3::before {
+  
+  font-size: 1.1rem;
+}
+
+/* Section styling */
+.settings-section {
+  margin: 0 0 8px 0;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+  margin-bottom: 16px;
+}
+
+.settings-section:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.2s ease;
+}
+
+/* Section headers */
+.settings-section h4 {
+  color: #334155;
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0 0 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Add icons to section headers */
+.settings-section h4:nth-of-type(1)::before { content: "📄"; }
+.settings-section:nth-child(2) h4::before { content: "📄"; }
+.settings-section:nth-child(3) h4::before { content: "🔧"; }
+.settings-section:nth-child(4) h4::before { content: "📏"; }
+.settings-section:nth-child(6) h4::before { content: "📦"; }
+.settings-section:nth-child(7) h4::before { content: "📐"; }
+.settings-section:nth-child(8) h4::before { content: "⚡"; }
+.settings-section:nth-child(9) h4::before { content: "🖨️"; }
+
+/* Section descriptions */
+.settings-section p {
+  color: #64748b;
+  font-size: 0.875rem;
+  line-height: 1.4;
+  margin: 0 0 16px 0;
+  font-style: italic;
+}
+
+/* Labels */
+.settings-section label {
+  color: #475569;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+/* Form inputs */
+.setting-group input,
+.setting-group select {
+  border: 2px solid #e2e8f0;
+  border-radius: 6px;
+  background: white;
+  transition: all 0.2s ease;
+  font-size: 0.875rem;
+}
+
+.setting-group input:focus,
+.setting-group select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.setting-group input:hover,
+.setting-group select:hover {
+  border-color: #cbd5e1;
+}
+
+/* Apply Layout Button */
+#applyLayoutBtn {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 12px 24px;
+  margin: 20px;
+  box-shadow: 0 4px 6px -1px rgba(245, 158, 11, 0.3);
+  transition: all 0.2s ease;
+}
+
+#applyLayoutBtn:hover {
+  background: linear-gradient(135deg, #d97706, #b45309);
+  box-shadow: 0 6px 8px -1px rgba(245, 158, 11, 0.4);
+  transform: translateY(-1px);
+}
+
+/* Formatting Controls Header */
+.control-panel > h3:last-of-type {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 2px solid #e2e8f0;
+}
+
+.control-panel > h3:last-of-type::before {
+
+}
+
+/* Toolbar styling */
+#toolbar {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  margin: 0 20px 16px 20px;
+  padding: 12px;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+}
+
+.action-btn {
+  position: relative;
+  text-align: center;
+  padding-left: 40px; /* Make room for the icon */
+}
+
+.action-btn svg {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-right: 0; /* Remove the margin since we're positioning absolutely */
+}
+
+/* Action buttons */
+.action-btn {
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 0.875rem;
+ 
+ 
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+}
+
+.action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.15);
+}
+
+/* Specific button colors */
+#copyBtn {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+#copyBtn:hover {
+  background: linear-gradient(135deg, #059669, #047857);
+}
+#copyBtn {
+  background: transparent;
+  border: 1px solid #007bff;
+  color: black;
+}
+
+#copyBtn:hover {
+  background: #007bff;
+  color: white;
+}
+#printBtn {
+  background: linear-gradient(135deg, #10b981, #059669);
+}
+
+#printBtn:hover {
+  background: linear-gradient(135deg, #059669, #047857);
+}
+
+.pdf-btn {
+  background: linear-gradient(135deg, #e11d48, #be185d) !important;
+}
+
+.pdf-btn:hover {
+  background: linear-gradient(135deg, #be185d, #9d174d) !important;
+}
+
+.share-btn {
+  background: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+}
+
+.share-btn:hover {
+  background: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+}
+
+#applyPaddingBtn {
+  background: linear-gradient(135deg, #6366f1, #4f46e5);
+  margin: 12px 0 0 0;
+}
+
+#applyPaddingBtn:hover {
+  background: linear-gradient(135deg, #4f46e5, #4338ca);
+}
+
+/* Small text styling */
+.settings-section small {
+  color: #6b7280;
+  background: #f9fafb;
+  padding: 6px 10px;
+  border-radius: 4px;
+  border-left: 3px solid #d1d5db;
+  display: block;
+  margin-top: 8px;
+  font-size: 0.8rem;
+}
+
+/* Responsive improvements */
+@media (max-width: 1024px) {
+  .sidebar {
+    width: 320px;
+  }
+  
+  .settings-section {
+    padding: 16px;
+  }
+}
+
+/* Custom scrollbar for sidebar */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+
+
+
+/* Modal Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modal-overlay.show {
+  display: flex;
+  animation: fadeIn 0.2s ease;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80vh;
+  overflow: hidden;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  animation: slideIn 0.3s ease;
+}
+
+.modal-header {
+  padding: 24px 24px 0 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #e2e8f0;
+  padding-bottom: 16px;
+}
+
+.modal-header h3 {
+  margin: 0;
+  color: #1e293b;
+  font-size: 1.25rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: #64748b;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+  background: #f1f5f9;
+  color: #334155;
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.modal-body p {
+  color: #64748b;
+  font-size: 0.875rem;
+  margin: 0 0 16px 0;
+  line-height: 1.5;
+}
+
+.url-container {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+#shareUrl {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid #e2e8f0;
+  border-radius: 6px;
+  font-family: monospace;
+  font-size: 0.875rem;
+  background: #f8fafc;
+  color: #475569;
+}
+
+#shareUrl:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background: white;
+}
+
+.copy-btn {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 12px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.copy-btn:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.copy-feedback {
+  background: #dcfce7;
+  color: #166534;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.copy-feedback.show {
+  opacity: 1;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { 
+    opacity: 0;
+    transform: scale(0.95) translateY(-10px);
+  }
+  to { 
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+
+
+#new-format::before {
+  content: "Click into a cell below to launch editor...";
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #666;
+  font-style: italic;
+  font-size: 14px;
+  min-height: 40px;
+}
+
+/* Hide the message when TinyMCE toolbar is active */
+#new-format:not(:empty)::before {
+  display: none;
+}
