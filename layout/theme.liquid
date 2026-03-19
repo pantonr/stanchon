@@ -1,0 +1,160 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code }}">
+<head>{% render 'thunder-injects' %}
+
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id=GTM-PCGG98XV'+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-PCGG98XV');</script>
+<!-- End Google Tag Manager -->
+
+{% include 'booster-seo' %}
+ {%- render 'ecom_header' -%}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrinak-to-fit=no, user-scalable=no">
+  <meta name="theme-color" content="{{ settings.color_primary }}">
+  <meta name="format-detection" content="telephone=no">
+
+
+  
+  
+    <!-- TrustBox script -->
+<!--<script type="text/javascript" src="//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js" async></script>-->
+<!-- End TrustBox script -->
+
+<meta name="google-site-verification" content="4aMIEEHHESM_CmCK_MmG47UmmFZLGC5U2yoVbA0XJfE" />
+  <link rel="canonical" href="{{ canonical_url }}">
+  <link rel="prefetch" as="document" href="https://{{shop.domain}}">
+  <link rel="dns-prefetch" href="https://cdn.shopify.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+  <link rel="preconnect" href="https://monorail-edge.shopifysvc.com">
+  {%- if settings.font_source == '1' %}
+    {%- assign header_font = settings.fnt_heading -%}
+    {%- assign base_font = settings.fnt_bd -%}
+    {%- assign base_font_bold = base_font | font_modify: 'weight', 'bold' -%}
+    <link rel="dns-prefetch" href="https://fonts.shopifycdn.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.shopify.com" crossorigin>
+    <link rel="preload" as="font" href="{{ header_font | font_url }}" type="font/woff2" crossorigin>
+    <link rel="preload" as="font" href="{{ base_font | font_url }}" type="font/woff2" crossorigin>
+    <link rel="preload" as="font" href="{{ base_font_bold | font_url }}" type="font/woff2" crossorigin>
+  {%- else -%}
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  {%- endif -%}
+  <link rel="preload" as="style" href="{{ 'pre_theme.min.css' | asset_url }}">
+  <link rel="preload" as="style" href="{%- render 'enable_minify' with 'css' ,nameFile:'theme.css' -%}">
+  {%- capture seo_title -%}
+    {%- if template == 'search' and search.performed == true -%}{{ 'general.search.heading' | t: count: search.results_count }}: {{ 'general.search.results_with_count' | t: terms: search.terms, count: search.results_count }}{%- elsif template == 'search.wish' %}{{ 'general.meta.wishlist' | t }}{%- elsif template == 'search.compe' %}{{ 'general.meta.compare' | t }}{%- else -%}{{ page_title }}{%- endif -%}
+    {%- if current_tags -%}{%- assign meta_tags = current_tags | join: ', ' %} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}{%- endif -%}
+    {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{%- endif -%}
+    {%- assign escaped_page_title = page_title | escape -%}
+    {%- unless escaped_page_title contains shop.name %} &ndash; {{ shop.name }}{%- endunless -%}
+  {%- endcapture -%}
+  {% comment %}<title>{{ seo_title | strip }}</title>{% endcomment %}
+  
+<title>{{ seo_title | strip }}</title>
+
+  {%- if page_description %}
+  <meta name="description" content="{{ page_description | escape }}">
+{%- elsif collection.current_type or collection.current_vendor %}
+  <meta name="description" content="{{ page_description | escape }}">
+{%- endif %}
+
+  
+  {%- if settings.favicon != blank %}<link rel="shortcut icon" type="image/png" href="{{ settings.favicon | img_url: '32x' }}">{% endif -%}
+  {%- if settings.favicon_apple != blank %}<link rel="apple-touch-icon-precomposed" type="image/png" sizes="152x152" href="{{ settings.favicon_apple | img_url: '152x' }}">{% endif -%}
+  {%- liquid 
+    assign t_name = request.page_type
+    assign body_img = settings.body_bg_image
+    render 'social-meta-tags',t_name:t_name
+    render 'head_assets',t_name:t_name
+    capture class_body_theme 
+      render 'class_body_theme',t_name:t_name, body_img:body_img 
+    endcapture -%}
+
+    {{ content_for_header }}
+
+
+{% comment %} {% render 'gsf-conversion-pixels' %} {% endcomment %}
+  {% render 'judgeme_core' %}
+{% comment %} {% include 'alireviews_core' %} {% endcomment %}
+
+  <meta name="p:domain_verify" content="a2874d6e5904776325a5f04438a7b28a"/>
+
+  {% if article.handle == 'news/safety-letter-generator-create-professional-sqdip-huddle-board-letters-in-minutes' %}
+  {% render 'safety-gen' %}
+{% endif %}
+
+ </head>
+<body {{class_body_theme | strip_newlines-}}>
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PCGG98XV"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+  
+  {%- render 'lazypreload' -%}
+  <div id="nt_wrapper">
+    {%- render 'header',t_name:t_name -%}
+    <div id="nt_content">{{ content_for_layout }}</div>
+
+    
+    <footer id="nt_footer" class="bgbl footer-1">{%- section 'footer_top' -%}{%- section 'footer_bot' -%}</footer>
+  </div>
+  {%- render 'div_html',t_name:t_name -%}
+{%- render "ecom_footer"-%}
+{% comment %} {% include 'smile-initializer' %} {% endcomment %}
+{% if template contains "product" %}
+    {%- assign simp_current_variant = product.selected_or_first_available_variant -%}
+    
+    {%- if cart.currency.iso_code == 'SGD' or cart.currency.iso_code == 'CHF' or cart.currency.iso_code == 'GBP' or cart.currency.iso_code == 'PKR' or cart.currency.iso_code == 'CAD' or cart.currency.iso_code == 'USD' or cart.currency.iso_code == 'AUD' or cart.currency.iso_code == 'BWP' or cart.currency.iso_code == 'BND' or cart.currency.iso_code == 'DOP' or cart.currency.iso_code == 'GTQ' or cart.currency.iso_code == 'HKD' or cart.currency.iso_code == 'INR' or cart.currency.iso_code == 'ILS' or cart.currency.iso_code == 'YEN' or cart.currency.iso_code == 'KES' or cart.currency.iso_code == 'KOR' or cart.currency.iso_code == 'LBP' or cart.currency.iso_code == 'MYR' or cart.currency.iso_code == 'MXN' or cart.currency.iso_code == 'NPR' or cart.currency.iso_code == 'NZD' or cart.currency.iso_code == 'NIO' or cart.currency.iso_code == 'NGN' or cart.currency.iso_code == 'PKR' or cart.currency.iso_code == 'CNY' or cart.currency.iso_code == 'PHP' or cart.currency.iso_code == 'SGD' or cart.currency.iso_code == 'LKR' or cart.currency.iso_code == 'CHF' or cart.currency.iso_code == 'TWD' or cart.currency.iso_code == 'TSH' or cart.currency.iso_code == 'THB' or cart.currency.iso_code == 'UGX' or cart.currency.iso_code == 'KWD' or cart.currency.iso_code == 'CLP' -%}
+    {%- assign simp_product_price = simp_current_variant.price | money_without_currency | remove:',' -%}		
+    {%- else -%}
+    {%- assign simp_product_price = simp_current_variant.price | money_without_currency | remove:'.' | replace: ',', '.' -%}
+    {%- endif -%}
+    
+    
+    <div itemscope itemtype=" http://schema.org/Product ">
+    	<meta itemprop="name" content="{{product.title}}" />
+    	<meta itemprop="description" content="{{product.description | strip_html | truncatewords: 50}}" />
+    	<meta itemprop="sku" content="{{ product.selected_or_first_available_variant.sku }}" />
+    	<meta itemprop="url" content="{{ shop.secure_url }}{{ product.url }}">
+    	<meta itemprop="image" content="{{ product.featured_image.src | img_url: 'grande' }}">
+    	<meta itemprop="brand" content="{{ product.vendor }}" />
+    	<meta itemprop="mpn" content="{{ product.selected_or_first_available_variant.sku }}" />
+    	{% assign gtin_num = product.selected_or_first_available_variant.barcode | size %}
+    	{% if gtin_num == 12 or gtin_num == 13 or gtin_num == 14  %}
+    		<meta itemprop="gtin{{gtin_num}}" content="{{ product.selected_or_first_available_variant.barcode }}" />
+    	{% endif %} 
+    
+    	<div itemprop="offers" itemscope itemtype=" http://schema.org/Offer ">
+    		<meta itemprop="priceCurrency" content="{{ shop.currency }}" />
+            <meta itemprop="price" content="{{ simp_product_price }}" />
+    		<meta itemprop="priceValidUntil" content="{{ "today" | date: '%s' | plus: 3650000 | date: "%Y-%m-%d" }}">
+        	<meta itemprop="availability" content=" http://schema.org/{%  if product.selected_or_first_available_variant.available %}InStock{% else %}OutOfStock{% endif %}"/>
+            <meta itemprop="itemCondition" itemtype=" http://schema.org/OfferItemCondition " content=" http://schema.org/NewCondition "/>
+       		<meta itemprop="seller" content="{{ shop.name | escape }}" />
+            <meta itemprop="url" content="{{ shop.secure_url }}{{ product.selected_or_first_available_variant.url }}">
+    	</div> 
+    </div>
+{% endif %}
+{% render 'thunder-preload' %}
+
+
+
+<style>
+#trust-bar {
+    display: none !important;
+}
+</style>
+
+
+  
+
+  
+  
+</body>
+</html>
