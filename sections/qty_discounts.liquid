@@ -1,0 +1,116 @@
+<div class="upsell-qty">
+  <h3 class="upsell-qty__title">Buy More Save More!</h3>
+  <div class="upsell-qty__discounts container">
+    <div class="upsell-qty__discount row fl_between al_center">
+      <div class="upsell-qty__discount-text col cd"><strong>2 items get 5% OFF</strong> on each product</div>
+      <div class="upsell-qty__discount-btns col-auto"><button class="upsell-qty__discount-btn">Add</button></div>  
+    </div>
+    <div class="upsell-qty__discount row fl_between al_center">
+      <div class="upsell-qty__discount-text col cd"><strong>3 items get 5% OFF</strong> on each product</div>
+      <div class="upsell-qty__discount-btns col-auto"><button class="upsell-qty__discount-btn">Add</button></div>  
+    </div>
+    <div class="upsell-qty__discount row fl_between al_center">
+      <div class="upsell-qty__discount-text col cd"><strong>5 items get 5% OFF</strong> on each product</div>
+      <div class="upsell-qty__discount-btns col-auto"><button class="upsell-qty__discount-btn">Add</button></div>  
+    </div>
+  </div>
+</div>
+<style>
+  .upsell-qty__title {
+      font-size: 18px;
+      font-weight: 500;
+      margin: 5px 0 18px;
+  }
+  .upsell-qty__discount {
+      border-radius: 8px;
+      border: 1px dashed #d1d1d1;
+      padding: 10px 0 11px;
+      background-color: #f5f5f5;
+      margin-bottom: -1px;
+  }
+  .upsell-qty__discount-btn {
+      border-radius: 8px;
+  }
+</style>
+<script type="application/json" id="json_dist4">
+  {%- for block in section.blocks -%}
+    {{block.dis_val}}____{{block.dis_qty}}____{{block.dis_code}}
+  {%- endfor -%}
+</script>
+{%- schema -%}
+  {
+    "name": "Quantity Discounts",
+    "class": "summary entry-summary mt__30",
+    "max_blocks": 100,
+    "settings": [
+      {
+        "type": "select",
+        "id": "apply_dis",
+        "options": [
+          {
+            "value": "1",
+            "label": "All products"
+          },
+          {
+            "value": "2",
+            "label": "Only product has tag 't4_discount_qty'"
+          }
+        ],
+        "label": "Applies to:",
+        "default": "2"
+      },
+      {
+        "type": "text",
+        "id": "dis_tt",
+        "label": "Discount Title",
+        "default": "Buy More Save More!"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "1",
+        "name": "Quantity Discount",
+        "settings": [
+          {
+            "type": "range",
+            "id": "dis_val",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "label": "Discount value",
+            "unit": "%",
+            "default": 5
+          },
+          {
+            "type": "range",
+            "id": "dis_qty",
+            "min": 1,
+            "max": 100,
+            "step": 1,
+            "label": "Minimum quantity of items",
+            "unit": "qty",
+            "default": 2
+          },
+          {
+            "type": "text",
+            "id": "dis_code",
+            "label": "Discount code (required)",
+            "info": "[create a percentage discount code](https://help.shopify.com/en/manual/discounts/create-discount-codes#create-a-fixed-value-or-percentage-discount)",
+            "placeholder": "5offkalles"
+          },
+          {
+            "type": "richtext",
+            "id": "dis_content",
+            "label": "Discount Text",
+            "default": "<p><b>2 items get 5% OFF<\/b> on each product<\/p>"
+          }
+        ]
+      }
+   ],
+    "default": {
+      "blocks": [
+        { "type": "1" },{ "type": "1" }
+      ]
+    }
+  }
+{% endschema %}

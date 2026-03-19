@@ -1,0 +1,34 @@
+{% assign reviews_json = product.metafields.custom.reviews | parse_json %}
+{% assign total_stars = 0 %}
+{% assign count = reviews_json.size %}
+
+{% for r in reviews_json %}
+  {% assign total_stars = total_stars | plus: r.stars %}
+{% endfor %}
+
+{% assign avg_stars = total_stars | divided_by: count %}
+
+<!-- Output average -->
+<div class="product-title-stars">
+  Average Rating: {{ avg_stars }} stars ({{ count }} reviews)
+</div>
+
+<!-- Output each review -->
+<div class="shopify-review-list">
+  {% for review in reviews_json %}
+    <div class="shopify-review-item">
+      <div class="shopify-review-left">
+        <div class="stars">
+          {% for i in (1..review.stars) %}
+            ★
+          {% endfor %}
+        </div>
+        <div class="name">{{ review.name }}</div>
+        <div class="date">{{ review.date }}</div>
+      </div>
+      <div class="shopify-review-right">
+        {{ review.text }}
+      </div>
+    </div>
+  {% endfor %}
+</div>

@@ -1,0 +1,709 @@
+{%- liquid
+  assign no_sold_out = product.available
+  if no_sold_out 
+   assign remove_soldout = settings.remove_sold_out 
+  else 
+   assign remove_soldout = false  
+  endif
+assign pr_variants = product.variants 
+assign variants_size = pr_variants.size 
+assign selected_variant = product.selected_variant
+assign pr_curent = settings.pr_curent
+if pr_curent == '2' 
+  assign current_variant = selected_variant |default: pr_variants.first 
+  if remove_soldout and current_variant.available == false and no_sold_out 
+    assign current_variant = product.first_available_variant 
+  endif
+else 
+  assign current_variant = product.selected_or_first_available_variant 
+endif
+assign default = product.has_only_default_variant
+assign on_sale = false
+if current_variant.compare_at_price > current_variant.price 
+  assign on_sale = true 
+endif
+assign ck_external = false
+assign pr_metafields = product.metafields
+assign pr_metafields_meta = pr_metafields.meta
+assign external = pr_metafields.external 
+assign on_link = external.on_link  
+if on_link != blank 
+  assign ck_external = true 
+  assign title = on_link | split:'|||' | first | strip
+  assign link = on_link | split:'|||' | last | strip 
+elsif external != blank 
+  assign ck_external = true 
+  assign title = external | first | first  
+  assign link = external | first | last 
+endif
+assign ck_inventory = settings.ck_inventory
+assign call_cl = '_ppr'
+assign Isquickview = false
+assign des_pr_layout = settings.des_pr_layout
+assign pr_incoming_mess = settings.pr_incoming_mess
+assign pid = product.id
+assign price_varies = product.price_varies | default:product.compare_at_price_varies
+assign pr_tags = product.tags
+assign locale_url = product.url | split:'/products/' | first
+
+assign inventory_quantity = current_variant.inventory_quantity
+assign inventory_management = current_variant.inventory_management
+if inventory_quantity <= 0  and inventory_management == 'shopify'
+  assign classdn1 = 'dn' 
+  assign classdn2 = ''
+  assign ck_preoder = true
+else 
+  assign classdn1 = '' 
+  assign classdn2 = 'dn'
+  assign ck_preoder = false
+endif
+assign PR_no_pick = false
+if pr_curent == '1' and variants_size > 1 and selected_variant == blank
+  assign PR_no_pick = true
+endif -%}
+
+
+{%- for block in section.blocks %}{% assign bk_stts = block.settings -%}
+   {%- case block.type -%}
+
+     {%- when 'frm' -%}
+        <div class="btn-atc atc-slide btn_full_{{bk_stts.btn_atc_full}} PR_no_pick_{{PR_no_pick}} btn_des_{{bk_stts.btn_des}} btn_txt_{{bk_stts.btn_txt}}">
+           {%- if no_sold_out -%}
+              <div id="callBackVariant{{call_cl}}" data-js-callback class="nt_{{current_variant.option1 | handle}} nt1_{{current_variant.option2 | handle}} nt2_{{current_variant.option3 | handle}}">
+
+                 {%- assign id_frm = 'cart-form' | append:call_cl -%}{%- assign cl_frm = 'nt_cart_form variations_form variations_form' | append:call_cl -%}
+                 {%- form 'product', product, id: id_frm, data-productid: pid, class: cl_frm -%}
+                    {{ form | payment_terms }}
+                    {%- if no_sold_out and settings.enable_sub_reCharge %}{% include 'subscription-product' %}{% endif -%} 
+                    {%- if settings.enable_infiniteoptions %}<div id="infiniteoptions-container"></div>{% endif -%} 
+                    {%- if default -%}
+                       <input name="id" data-productid="{{pid}}" value="{{ pr_variants.first.id }}" type="hidden">
+                       <div class="nt_pr_js lazypreloadt4s op__0" data-id="{{call_cl}}" data-rendert4s="{{locale_url}}/products/{{product.handle}}/?view=js{{call_cl}}"></div>
+                       {%- if pr_incoming_mess and inventory_management and inventory_quantity <= 0 and current_variant.incoming -%}
+                           {%- assign idate = current_variant.next_incoming_date | date: format: settings.date_in -%}
+                           <div id="pr_incoming_mess{{call_cl}}" class="nt_varianqtyss mb__15 cb tu fwsb">{% if current_variant.available %}{{ 'products.product.will_not_ship_until_html' | t: date:idate }}{% else %}{{ 'products.product.will_be_in_stock_after_html' | t: date:idate }}{% endif %}</div>
+                       {%- endif -%}
+                       {{-product.metafields.meta.customProperty -}}
+                    {%- else -%}
+                       <select name="id" data-productid="{{pid}}" id="product-select{{call_cl}}" class="product-select_pr product-form__variants hide hidden">
+                          {%- for variant in pr_variants -%}
+                              {%- if variant.available -%}
+                                <option {% if variant.id == current_variant.id %} selected="selected" {% endif %} value="{{ variant.id }}">{{ variant.title | escape }}</option>
+                              {%- else -%}
+                                <option value="{{ variant.id }}"{%- if remove_soldout %} disabled="disabled"{%- endif %} class="nt_sold_out">{{ variant.title | escape }}</option>
+                              {%- endif -%}
+                            {%- endfor -%}
+                       </select>
+
+                       {%- case bk_stts.swatch_design -%}
+                          {%- when '1' -%}{%- render 'swatch',product:product,block:block,remove_soldout:remove_soldout,call_cl:call_cl,locale_url:locale_url -%}
+                          {%- when '2' -%}{%- render 'swatch_2',product:product,block:block,remove_soldout:remove_soldout,call_cl:call_cl,locale_url:locale_url -%}
+                          {%- when '3' -%}{%- render 'swatch_radio',product:product,block:block,remove_soldout:remove_soldout,call_cl:call_cl,locale_url:locale_url -%}
+                          {%- when '4' -%}{%- render 'swatch_radio_2',product:product,block:block,remove_soldout:remove_soldout,call_cl:call_cl,locale_url:locale_url -%}
+                          {%- when '5' -%}{%- render 'swatch_radio_3',product:product,block:block,remove_soldout:remove_soldout,call_cl:call_cl,locale_url:locale_url -%}
+                          {%- when '6' -%}{%- render 'swatch_radio_4',product:product,block:block,remove_soldout:remove_soldout,call_cl:call_cl,locale_url:locale_url -%}
+                          {%- when '7' -%}{%- render 'swatch_rectangle',product:product,block:block,remove_soldout:remove_soldout,call_cl:call_cl,locale_url:locale_url -%}
+                          {%- when '8' -%}{%- render 'swatch_rectangle_2',product:product,block:block,remove_soldout:remove_soldout,call_cl:call_cl,locale_url:locale_url -%}
+                          {%- when '9' -%}{%- render 'swatch_simple',product:product,block:block,remove_soldout:remove_soldout,call_cl:call_cl,locale_url:locale_url -%}
+                          {%- when '10' -%}{%- render 'swatch_simple_2',product:product,block:block,remove_soldout:remove_soldout,call_cl:call_cl,locale_url:locale_url -%}
+                       {%- endcase -%}
+                       {{-product.metafields.meta.customProperty -}}
+                        <div class="nt_pr_js lazypreloadt4s op__0" data-id="{{call_cl}}" data-rendert4s="{{locale_url}}/products/{{product.handle}}/?view=js{{call_cl}}"></div>
+                       {%- if pr_incoming_mess -%}
+                          {%- if inventory_quantity <= 0 and current_variant.incoming and variants_size < 2 and inventory_management  -%}
+                              {%- assign idate = current_variant.next_incoming_date | date: format: settings.date_in -%}
+                              <div id="pr_incoming_mess{{call_cl}}" class="nt_varianqtyss mb__15 cb tu fwsb">{% if current_variant.available %}{{ 'products.product.will_not_ship_until_html' | t: date:idate }}{% else %}{{ 'products.product.will_be_in_stock_after_html' | t: date:idate }}{% endif %}</div>
+                          {%- else -%}
+                              <div id="pr_incoming_mess{{call_cl}}" class="nt_varianqty mb__15 cb tu fwsb dn">{{ 'products.product.will_not_ship_until_html' | t: date:'[19041994]' }}</div>
+                          {%- endif -%}
+                       {%- endif -%}
+                    {%- endif -%}
+
+
+
+
+
+<div id="dynamic-color-fields" class="mb__20 flag-station"></div>
+
+
+
+
+                
+<div class="price-qty-row flex wrap mb__20">
+  <div class="price-col" style="flex: 0 0 50%; max-width: 50%;">
+    {%- if price_varies and on_sale -%}
+      <span class="price price_varies"><del>{{ current_variant.compare_at_price | money }}</del> <ins>{{ current_variant.price | money }}</ins></span>
+    {%- elsif price_varies -%}
+      <span class="price price_varies">{{ current_variant.price | money }}</span>
+    {%- elsif on_sale -%}
+      <span class="price"><del>{{ current_variant.compare_at_price | money }}</del> <ins>{{ current_variant.price | money }}</ins></span>
+    {%- else -%}
+      <span class="price">{{ current_variant.price | money }}</span>
+    {%- endif -%}
+  </div>
+
+
+  
+  <div class="qty-col" style="flex: 0 0 50%; max-width: 50%;">
+    <div class="quantity pr qty__{{bk_stts.show_qty}}" id="sp_qty{{call_cl}}"> 
+      <input type="number" class="input-text qty text tc qty_pr_js" step="1" min="1" max="{% if ck_preoder %}999{% elsif inventory_management != null %}{{inventory_quantity}}{% else %}9999{% endif %}" name="quantity" value="1" size="4" pattern="[0-9]*" inputmode="numeric">
+      <div class="qty tc fs__14">
+        <button type="button" class="plus db cb pa pd__0 pr__15 tr r__0"><i class="facl facl-plus"></i></button>
+        <button type="button" class="minus db cb pa pd__0 pl__15 tl l__0"><i class="facl facl-minus"></i></button>
+      </div>
+    </div>
+       
+    
+
+
+    
+
+
+
+
+
+
+    
+    {% if product.tags contains 'Flag Station' %}
+
+<script>
+(function () {
+
+  function initDynamicColors() {
+
+    const container = document.getElementById('dynamic-color-fields');
+    if (!container) return;
+
+    const form = container.closest('form');
+    if (!form) return;
+
+    // Inject CSS once
+    if (!document.getElementById('flag-station-style')) {
+      const style = document.createElement('style');
+      style.id = 'flag-station-style';
+      style.innerHTML = `
+        .flag-station select.input-text.w__100 {
+          padding: 0 !important;
+          margin: 0 !important;
+          font-size: 11px !important;
+        }
+        .flag-station .mb__10 {
+        display: flex !important;
+      }
+      .flag-station label.cd.mb__5 {
+    min-width: 60px;
+}
+.flag-station select.input-text.w__100 {
+ 
+    text-indent: 1em;
+}
+
+        .flag-station label.cd.mb__5 {
+          display: flex;
+          align-items: center;
+          margin: 0 10px 0 0 !important;
+          font-weight: 700;
+        }
+      `;
+      document.head.appendChild(style);
+    }
+
+    const variantSelect =
+      form.querySelector('select.product-select_pr') ||
+      form.querySelector('select[name="id"]');
+
+    function getCount() {
+
+      // Hidden select (initial load)
+      if (variantSelect && variantSelect.selectedIndex >= 0) {
+        const title = variantSelect.options[variantSelect.selectedIndex].textContent || '';
+        const match = title.match(/\d+/);
+        if (match) return parseInt(match[0], 10);
+      }
+
+      // Swatch fallback
+      const selected = form.querySelector('.nt-swatch.is-selected');
+      if (selected && selected.dataset.value) {
+        return parseInt(selected.dataset.value, 10) || 1;
+      }
+
+      return 1;
+    }
+
+    function build(count) {
+
+      container.innerHTML = '';
+      count = parseInt(count, 10);
+      if (!count || count < 1) count = 1;
+
+      const colors = [
+        "Red",
+        "Orange",
+        "Yellow",
+        "Green",
+        "Blue",
+        "Purple",
+        "White",
+        "Gray",
+        "Black"
+      ];
+
+      for (let i = 1; i <= count; i++) {
+
+        const options = colors.map(c =>
+          `<option value="${c}">${c}</option>`
+        ).join('');
+
+        container.insertAdjacentHTML('beforeend', `
+          <div class="mb__10">
+            <label class="cd mb__5">Color ${i}</label>
+            <select name="properties[Color ${i}]"
+                    class="input-text w__100"
+                    required>
+              <option value="">Select Color</option>
+              ${options}
+            </select>
+          </div>
+        `);
+      }
+    }
+
+    function refresh() {
+      setTimeout(function () {
+        build(getCount());
+      }, 50); // wait for theme to finish updating variant
+    }
+
+    refresh();
+
+    if (variantSelect) {
+      variantSelect.addEventListener('change', refresh);
+    }
+
+    form.addEventListener('click', function (e) {
+      if (e.target.closest('.nt-swatch')) {
+        refresh();
+      }
+    });
+  }
+
+  // Initial load
+  document.addEventListener('DOMContentLoaded', initDynamicColors);
+
+  // Shopify section reload (AJAX)
+  document.addEventListener('shopify:section:load', initDynamicColors);
+
+})();
+</script>
+
+{% endif %}
+
+
+
+
+
+
+
+    
+  </div>
+
+</div>
+
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+
+
+
+{%- assign PR_buy_pr = false -%}
+{%- if bk_stts.enable_payment_btn and ck_external == false and no_sold_out -%}
+  {%- assign PR_buy_pr = true -%}
+{%- endif -%}
+
+                
+                
+{%- if product.tags contains 'customizable' -%}
+  <div class="custom-text-input variations_button in_flex column w__100">
+    {%- if current_variant.title contains 'Two-line' -%}
+      <div class="mb__20 special-custom-text-input">
+        <label for="custom-text-line1-{{call_cl}}" class="cd mb__5">Enter Your First Line</label>
+        <input type="text" id="custom-text-line1-{{call_cl}}" name="properties[Custom Text Line 1]" class="input-text w__100" required maxlength="30">
+      </div>
+      <div class="mb__20 special-custom-text-input">
+        <label for="custom-text-line2-{{call_cl}}" class="cd mb__5">Enter Your Second Line</label>
+        <input type="text" id="custom-text-line2-{{call_cl}}" name="properties[Custom Text Line 2]" class="input-text w__100" required maxlength="30">
+      </div>
+    {%- else -%}
+      <div class="mb__20 special-custom-text-input">
+        <label for="custom-text-{{call_cl}}" class="cd mb__5">Enter Your Custom Text</label>
+        <input type="text" id="custom-text-{{call_cl}}" name="properties[Custom Text]" class="input-text w__100" required maxlength="30">
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+<div class="variations_button in_flex column w__100 buy_qv_{{PR_buy_pr}}">
+  <div class="flex wrap">
+    {%- if ck_external -%}
+      <a href="{{link}}" rel="nofollow" target="_blank" class="truncate external_btn button">{{title}}</a>
+      {%- render 'nt_add_w',class:"order-3",tooltip:"ttip_nt tooltip_top_left" -%}
+    {%- elsif no_sold_out == false -%}
+      <a rel="nofollow" data-no-instant href="#" class="truncate out_stock button pe_none" id="out_stock{{call_cl}}">{{'products.product.outofstock' | t}}</a>
+      {%- render 'nt_add_w',tooltip:"ttip_nt tooltip_top_left" -%}
+    {%- else -%}
+
+      <a rel="nofollow" data-no-instant href="#" class="single_stt out_stock button pe_none order-2" id="out_stock{{call_cl}}">{{'products.product.outofstock' | t}}</a>
+      {%- render 'nt_add_w',class:"order-3",tooltip:"ttip_nt tooltip_top_left" -%}
+      
+      <button type="submit" 
+        data-time='{{bk_stts.time}}000' 
+        data-ani='{{bk_stts.ani}}' 
+        class="single_add_to_cart_button button truncate js_frm_cart w__100 mt__20 order-4{% if PR_no_pick %} disabled{% endif %}"
+        {%- if product.tags contains 'customizable' -%}data-requires-custom="true"{%- endif -%}>
+        <span class="txt_add {{classdn1}}">{{ 'products.product.add_to_cart' | t }}</span>
+        <span class="txt_pre {{classdn2}}">{{ 'products.product.pre_orders' | t }}</span>
+      </button>
+    {%- endif -%}
+  </div>
+</div>
+
+
+<!-- ADD SAMPLE BUTTON HERE -->
+<div style="padding:0;margin-top:20px;width:100%">
+  <a href="/pages/contact#sample-request" target="_blank" style="background:transparent;border:1px solid #1e3a8a;color:#1e3a8a;text-transform:uppercase;position:relative;cursor:pointer;padding:5px 25px;border-radius:40px;font-size:14px;font-weight:600;min-height:40px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;width:100%;transition:all 0.3s ease;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" onmouseover="this.style.background='rgba(30,58,138,0.3)'" onmouseout="this.style.background='transparent'">
+    <span style="display:block">Request Sample</span>
+  </a>
+</div>
+<style>.sample-request-button{background:transparent!important;border:1px solid #1e3a8a;color:#1e3a8a;text-transform:uppercase;cursor:pointer;padding:5px 25px;border-radius:40px;font-size:14px;font-weight:600;min-height:40px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;width:100%;transition:all .3s ease;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sample-request-button:hover{background:rgba(30,58,138,.3)!important;color:#1e3a8a;text-decoration:none}.sample-request-wrapper{padding:0;margin-top:20px;width:100%}
+
+</style>
+
+
+                
+                   {%- if PR_buy_pr -%}{{- form | payment_button -}}{%- endif -%} 
+                    </div>
+                 {%- endform -%}
+              </div>
+           {%- endif -%}
+        </div>
+
+      {%- when 'social' -%}
+        <div class="social-share {{bk_stts.class}}">
+          {%- if settings.share_source == '1' %}{%- render 'social-sharing' -%}
+          {%- elsif settings.share_source == '3' %}
+              {% capture the_snippet_share %}
+                {% render  'ssw-widget-share-links' with 1 %}
+              {% endcapture %}
+              {% unless the_snippet_share contains 'Liquid error' %}
+                {{ the_snippet_share }}
+              {% endunless %}
+          {%- else -%}
+          <div class="nt-social nt__addthis addthis_inline_share_toolbox_icxz"></div>
+          {% endif %}
+
+           <div class="banana sharethis-inline-share-buttons"></div>
+  
+        </div>
+
+        
+
+   {%- endcase -%}
+{%- endfor -%}
+
+{%- schema -%}
+  {
+    "name": "Product summary purchase",
+    "class": "summary entry-summary mt__30",
+    "max_blocks": 30,
+    "blocks": [
+      {
+        "type": "frm",
+        "name": "Product Form",
+        "limit": 1,
+        "settings": [
+         {
+           "type": "select",
+           "id": "ani",
+           "options": [
+             {
+               "value": "none",
+               "label": "None"
+             },
+             {
+               "value": "bounce",
+               "label": "Bounce"
+             },
+             {
+               "value": "tada",
+               "label": "Tada"
+             },
+             {
+               "value": "swing",
+               "label": "Swing"
+             },
+             {
+               "value": "flash",
+               "label": "Flash"
+             },
+             {
+               "value": "fadeIn",
+               "label": "FadeIn"
+             },
+             {
+               "value": "heartBeat",
+               "label": "HeartBeat"
+             },
+             {
+               "value": "shake",
+               "label": "Shake"
+             }
+           ],
+           "label": "Add to cart animation"
+         },
+          {
+            "type": "range",
+            "id": "time",
+            "min": 2,
+            "max": 40,
+            "step": 1,
+            "label": "Loop time (seconnds)",
+            "info": "Loop time add to cart animation",
+            "unit": "sec",
+            "default": 6
+          },
+         {
+           "type": "select",
+           "id": "btn_des",
+           "options": [
+             {
+               "value": "1",
+               "label": "Design 1"
+             },
+             {
+               "value": "2",
+               "label": "Design 2"
+             },
+             {
+               "value": "3",
+               "label": "Design 3"
+             }
+           ],
+           "label": "Button Design"
+         },
+         {
+            "type": "select",
+            "id": "btn_txt",
+            "default": "3",
+            "options": [
+              {
+                "value": "0",
+                "label": "None"
+              },
+              {
+                "value": "1",
+                "label": "Lowercase"
+              },
+              {
+                "value": "2",
+                "label": "Capitalize"
+              },
+              {
+                "value": "3",
+                "label": "Uppercase"
+              }
+            ],
+            "label": "Button transform Text:"
+         },
+         {
+           "type": "header",
+           "content": "Product Swatch"
+         },
+         {
+           "type": "select",
+           "id": "swatch_design",
+           "default": "2",
+           "options": [
+             {
+               "group": "Circle:",
+               "value": "1",
+               "label": "Circle"
+             },
+             {
+               "group": "Circle:",
+               "value": "2",
+               "label": "Circle + color"
+             },
+             {
+               "group": "Radio:",
+               "value": "3",
+               "label": "Radio"
+             },
+             {
+               "group": "Radio:",
+               "value": "4",
+               "label": "Radio + color"
+             },
+             {
+               "group": "Radio:",
+               "value": "5",
+               "label": "Radio full width"
+             },
+             {
+               "group": "Radio:",
+               "value": "6",
+               "label": "Radio full width + color"
+             },
+             {
+               "group": "Rectangle:",
+               "value": "7",
+               "label": "Rectangle"
+             },
+             {
+               "group": "Rectangle:",
+               "value": "8",
+               "label": "Rectangle + color"
+             },
+             {
+               "group": "Simple:",
+               "value": "9",
+               "label": "Simple"
+             },
+             {
+               "group": "Simple:",
+               "value": "10",
+               "label": "Simple + color"
+             }
+           ],
+           "label": "Swatch design setting"
+         },
+         {
+           "type": "select",
+           "id": "style_color",
+           "options": [
+             {
+               "value": "1",
+               "label": "Swatch color circle"
+             },
+             {
+               "value": "2",
+               "label": "Swatch color square"
+             }
+           ],
+           "label": "Swatch color setting for Design"
+         },
+         {
+           "type": "select",
+           "id": "swatch_style",
+           "options": [
+             {
+               "value": "1",
+               "label": "Swatch color (Default or Upload)"
+             },
+             {
+               "value": "2",
+               "label": "Swatch image variant"
+             }
+           ],
+           "label": "Swatch Layout setting for color/img"
+         },
+         {
+           "type": "select",
+           "id": "swatch_size",
+           "options": [
+             {
+               "value": "small",
+               "label": "Small"
+             },
+             {
+               "value": "medium",
+               "label": "Medium"
+             },
+             {
+               "value": "large",
+               "label": "Large"
+             },
+             {
+               "value": "exlarge",
+               "label": "Extra Large"
+             }
+           ],
+           "label": "Swatch color setting for size",
+           "default": "medium"
+         },
+         {
+           "type": "checkbox",
+           "id": "show_qty",
+           "label": "Show quantity selector",
+           "default": true
+         },
+         {
+           "type": "checkbox",
+           "id": "btn_atc_full",
+           "label": "Use Add to cart full width?",
+           "default": false
+         },
+         {
+           "type": "checkbox",
+           "id": "enable_payment_btn",
+           "label": "Show dynamic checkout button",
+           "info": "Lets customers check out directly using a familiar payment method. [Learn more](https:\/\/help.shopify.com\/manual\/using-themes\/change-the-layout\/dynamic-checkout)",
+           "default": false
+         }
+        ]
+      },
+      {
+        "type": "social",
+        "name": "Product social",
+        "limit": 1,
+        "settings": [
+         {
+           "type": "select",
+           "id": "class",
+           "label": "Social align",
+           "default": "tc",
+           "options": [
+             {
+               "value": "tdf",
+               "label": "Default"
+             },
+             {
+               "value": "tc",
+               "label": "Center"
+             }
+           ]
+         }
+         ]
+      }
+   ],
+    "default": {
+      "blocks": [
+        { "type": "frm" },{ "type": "social" }
+      ]
+    }
+  }
+{% endschema %}
+
+{%- if product.tags contains 'customizable' -%}
+  {{ 'custom-text-pa.css' | asset_url | stylesheet_tag }}
+  {{ 'all-product-landing-page-pa.css' | asset_url | stylesheet_tag }}
+  {{ 'custom-text-pa.js' | asset_url | script_tag }}
+{%- endif -%}
