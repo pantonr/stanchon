@@ -169,30 +169,30 @@ Title and Description
 {%- endif -%}
 
 {%-unless booster_title == blank %}
-  {%- assign booster_title = booster_title | replace : "[title]", [baType].title -%}
+  {%- assign booster_title = booster_title | replace: "[title]", self[baType].title -%}
   {%- if baType == 'product' -%}
     {%- assign booster_title = booster_title | replace : "[price]", product.price -%}
-    {%- assign booster_title = booster_title | replace : "[product_vendor]", [baType].vendor -%}
-    {%- assign booster_title = booster_title | replace : "[product_type]", [baType].type -%}
+    {%- assign booster_title = booster_title | replace: "[product_vendor]", self[baType].vendor -%}
+    {%- assign booster_title = booster_title | replace: "[product_type]", self[baType].type -%}
   {%- endif -%}
-  {%- assign booster_title = booster_title | replace : "[content]", [baType].content | strip_html -%}
-  {%- assign booster_title = booster_title | replace : "[description]", [baType].description -%}
+  {%- assign booster_title = booster_title | replace: "[content]", self[baType].content | strip_html -%}
+  {%- assign booster_title = booster_title | replace: "[description]", self[baType].description -%}
   {%- assign booster_title = booster_title | replace : "[shop_name]", shop.name -%}
-  {%- assign booster_title = booster_title | replace : "[author]", [baType].author -%}
+  {%- assign booster_title = booster_title | replace: "[author]", self[baType].author -%}
   <title>{{ booster_title | escape }}</title>
 {%- else %}
   <title>{{ page_title }}{%- if current_tags -%}{%- assign meta_tags = current_tags | join: ', ' -%} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags }}{%- endif -%}{%- if current_page != 1 -%} &ndash; {{ 'general.meta.page' | t: page: current_page }}{%- endif -%}{%- unless page_title contains shop.name -%} &ndash; {{ shop.name }}{%- endunless -%}</title>
 {%- endunless -%}
 
 {%- unless booster_desc == blank %}
-  {%- assign booster_desc = booster_desc | replace : "[description]", [baType].description -%}
+  {%- assign booster_desc = booster_desc | replace: "[description]", self[baType].description -%}
   {%- assign booster_desc = booster_desc | replace : "[price]", product.price -%}
-  {%- assign booster_desc = booster_desc | replace : "[product_vendor]", [baType].vendor -%}
-  {%- assign booster_desc = booster_desc | replace : "[product_type]", [baType].type -%}
+  {%- assign booster_desc = booster_desc | replace: "[product_vendor]", self[baType].vendor -%}
+  {%- assign booster_desc = booster_desc | replace: "[product_type]", self[baType].type -%}
   {%- assign booster_desc = booster_desc | replace : "[shop_name]", shop.name -%}
-  {%- assign booster_desc = booster_desc | replace : "[title]", [baType].title -%}
-  {%- assign booster_desc = booster_desc | replace : "[content]", [baType].content | strip_html -%}
-  {%- assign booster_desc = booster_desc | replace : "[author]", [baType].author -%}
+  {%- assign booster_desc = booster_desc | replace: "[title]", self[baType].title -%}
+  {%- assign booster_desc = booster_desc | replace: "[content]", self[baType].content | strip_html -%}
+  {%- assign booster_desc = booster_desc | replace: "[author]", self[baType].author -%}
   <meta name="description" content="{{ booster_desc | strip | strip_newlines | escape }}" />
 {%- else %}
   <meta name="description" content="{{ page_description | strip | strip_newlines | escape }}" />
@@ -518,4 +518,70 @@ Organization and Website Schema Markup
   http.send(data);
 </script>
 {%-endif %}
-<!-- end of Booster Apps SEO -->
+<!-- end of Booster Apps SEO -->{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: '{%- assign booster_title = booster_title | replace : "[title]", [baType].title
+    -%}'
+  to: '{%- assign booster_title = booster_title | replace: "[title]", self[baType].title
+    -%}'
+  position: 7195..7280
+- from: '{%- assign booster_title = booster_title | replace : "[product_vendor]",
+    [baType].vendor -%}'
+  to: '{%- assign booster_title = booster_title | replace: "[product_vendor]", self[baType].vendor
+    -%}'
+  position: 7404..7499
+- from: '{%- assign booster_title = booster_title | replace : "[product_type]", [baType].type
+    -%}'
+  to: '{%- assign booster_title = booster_title | replace: "[product_type]", self[baType].type
+    -%}'
+  position: 7504..7595
+- from: '{%- assign booster_title = booster_title | replace : "[content]", [baType].content
+    | strip_html -%}'
+  to: '{%- assign booster_title = booster_title | replace: "[content]", self[baType].content
+    | strip_html -%}'
+  position: 7614..7716
+- from: '{%- assign booster_title = booster_title | replace : "[description]", [baType].description
+    -%}'
+  to: '{%- assign booster_title = booster_title | replace: "[description]", self[baType].description
+    -%}'
+  position: 7719..7816
+- from: '{%- assign booster_title = booster_title | replace : "[author]", [baType].author
+    -%}'
+  to: '{%- assign booster_title = booster_title | replace: "[author]", self[baType].author
+    -%}'
+  position: 7903..7990
+- from: '{%- assign booster_desc = booster_desc | replace : "[description]", [baType].description
+    -%}'
+  to: '{%- assign booster_desc = booster_desc | replace: "[description]", self[baType].description
+    -%}'
+  position: 8467..8562
+- from: '{%- assign booster_desc = booster_desc | replace : "[product_vendor]", [baType].vendor
+    -%}'
+  to: '{%- assign booster_desc = booster_desc | replace: "[product_vendor]", self[baType].vendor
+    -%}'
+  position: 8647..8740
+- from: '{%- assign booster_desc = booster_desc | replace : "[product_type]", [baType].type
+    -%}'
+  to: '{%- assign booster_desc = booster_desc | replace: "[product_type]", self[baType].type
+    -%}'
+  position: 8743..8832
+- from: '{%- assign booster_desc = booster_desc | replace : "[title]", [baType].title
+    -%}'
+  to: '{%- assign booster_desc = booster_desc | replace: "[title]", self[baType].title
+    -%}'
+  position: 8917..9000
+- from: '{%- assign booster_desc = booster_desc | replace : "[content]", [baType].content
+    | strip_html -%}'
+  to: '{%- assign booster_desc = booster_desc | replace: "[content]", self[baType].content
+    | strip_html -%}'
+  position: 9003..9103
+- from: '{%- assign booster_desc = booster_desc | replace : "[author]", [baType].author
+    -%}'
+  to: '{%- assign booster_desc = booster_desc | replace: "[author]", self[baType].author
+    -%}'
+  position: 9106..9191
+{%- endcomment -%}

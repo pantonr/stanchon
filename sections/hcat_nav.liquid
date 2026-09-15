@@ -16,13 +16,13 @@ else
 endif -%}
 
 {%- capture blockHTML -%}
-  {%- for type in tp_blocks %}{% assign i = arrTyCurent | where:type | size %}{% assign block = [type][i] %}{% assign blockID = block.id -%}{%- assign bk_stts = block.settings -%}
+  {%- for type in tp_blocks %}{% assign i = arrTyCurent | where:type | size %}{% assign block = self[type][i] %}{% assign blockID = block.id -%}{%- assign bk_stts = block.settings -%}
 
         {%- case block.type -%}
 
            {%- when 'simnt-mega' -%}{%- assign image = bk_stts.bg_img -%}
               <li id="item_{{blockID}}" class="itemcl_{{blockID}} cat_menu-0 has-children type_{{block.type}} des_full2_{{bk_stts.full2}} t4s_pos_cat_{{bk_stts.pos}}" {{ block.shopify_attributes }}>
-               <a class="lh__1 flex al_center pr" target="{{[bk_stts.open_link]}}" href="{{bk_stts.url}}"{% if bk_stts.cus_cl %} style="color: {{bk_stts.cl}} !important"{% endif %}>{%- render 'title_menu2',block:block -%}<i class="las la-angle-right"></i></a>
+               <a class="lh__1 flex al_center pr" target="{{ self[bk_stts.open_link] }}" href="{{bk_stts.url}}"{% if bk_stts.cus_cl %} style="color: {{bk_stts.cl}} !important"{% endif %}>{%- render 'title_menu2',block:block -%}<i class="las la-angle-right"></i></a>
                <div class="sub-menu sub-cat-menu{% if image != blank %} lazyloadt4s{% endif %}"{% if image != blank %} data-bgset="{{ image | img_url: '1x1' }}" data-ratio="{{image.aspect_ratio}}" data-sizes="auto" data-parent-fit="cover"{% endif %}><div class="container">
                   <div class="row lazy_menu" data-hcatpackery='{ "itemSelector": ".sub-column-item","gutter": 0,"percentPosition": true,"originLeft": {{ltr}} }'>{%- render 'mn_inc_cat',se_blocks:se_blocks,arr_id:arr_id,block:block,Current_id:blockID -%}</div>
                </div></div>
@@ -34,7 +34,7 @@ endif -%}
 
            {%- when 'simnt-drop' -%}
               <li id="item_{{blockID}}" class="itemcl_{{blockID}} cat_menu-0 has-children type_{{block.type}} t4s_pos_cat_{{bk_stts.pos}}" {{ block.shopify_attributes }}>
-                  <a class="lh__1 flex al_center pr" target="{{[bk_stts.open_link]}}" href="{{bk_stts.url}}"{% if bk_stts.cus_cl %} style="color: {{bk_stts.cl}} !important"{% endif %}>{%- render 'title_menu2',block:block -%}<i class="las la-angle-right"></i></a>
+                  <a class="lh__1 flex al_center pr" target="{{ self[bk_stts.open_link] }}" href="{{bk_stts.url}}"{% if bk_stts.cus_cl %} style="color: {{bk_stts.cl}} !important"{% endif %}>{%- render 'title_menu2',block:block -%}<i class="las la-angle-right"></i></a>
                   {%- if linklists[bk_stts.menu].links.size > 0 -%}
                   <div class="sub-menu sub-cat-menu"><div class="lazy_menu">{%- render 'mn_inc_cat',se_blocks:se_blocks,arr_id:arr_id,block:block,Current_id:blockID -%}</div></div>
                   {%- style -%}
@@ -44,7 +44,7 @@ endif -%}
               </li>
 
            {%- else -%}
-              <li id="item_{{block.id}}" class="itemcl_{{blockID}} cat_menu-0 type_{{block.type}}" {{ block.shopify_attributes }}><a class="lh__1 flex al_center pr" target="{{[bk_stts.open_link]}}" href="{{bk_stts.url}}"{% if bk_stts.cus_cl %} style="color: {{bk_stts.cl}} !important"{% endif %}>{%- render 'title_menu2',block:block -%}</a></li>
+              <li id="item_{{block.id}}" class="itemcl_{{blockID}} cat_menu-0 type_{{block.type}}" {{ block.shopify_attributes }}><a class="lh__1 flex al_center pr" target="{{ self[bk_stts.open_link] }}" href="{{bk_stts.url}}"{% if bk_stts.cus_cl %} style="color: {{bk_stts.cl}} !important"{% endif %}>{%- render 'title_menu2',block:block -%}</a></li>
 
         {%- endcase -%}
 
@@ -1403,4 +1403,22 @@ endif -%}
       ]
     }
   }
-{% endschema %}
+{% endschema %}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% assign block = [type][i] %}"
+  to: "{% assign block = self[type][i] %}"
+  position: 585..619
+- from: "{{[bk_stts.open_link]}}"
+  to: "{{ self[bk_stts.open_link] }}"
+  position: 1056..1085
+- from: "{{[bk_stts.open_link]}}"
+  to: "{{ self[bk_stts.open_link] }}"
+  position: 2607..2636
+- from: "{{[bk_stts.open_link]}}"
+  to: "{{ self[bk_stts.open_link] }}"
+  position: 3627..3656
+{%- endcomment -%}

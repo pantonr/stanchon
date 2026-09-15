@@ -25,7 +25,7 @@
                   <div product-id="{{ product.id }}" class="arv-collection arv-collection--{{ product.id }}"></div>
 				   {%- if product.price_varies -%}
 					{{ product.price_min | money }}–{{ product.price_max | money }}
-					{%- elsif on_sale -%}<del>{{ product.compare_at_price  | money }}</del> <ins>{{ product.price | money }}</ins>{%- if settings.label_sale_style == '1' -%}<span class="nt_label onsale">{{ on_sale_txt }}</span>{%- else-%}{%- assign save = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}<span class="onsale nt_label">{{ save_js | replace: 'saved_amount':save }}</span>{% endif -%}
+					{%- elsif on_sale -%}<del>{{ product.compare_at_price  | money }}</del> <ins>{{ product.price | money }}</ins>{%- if settings.label_sale_style == '1' -%}<span class="nt_label onsale">{{ on_sale_txt }}</span>{%- else-%}{%- assign save = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}<span class="onsale nt_label">{{ save_js | replace: 'saved_amount', save }}</span>{% endif -%}
 					{%- else -%}
 					{{ product.price | money }}
 					{%- endif -%}
@@ -45,4 +45,13 @@
  {%- if only_search_prs == false and product_type == '*' or product_type == blank -%}
  <div class="col-12 results_article_blog lazyloadt4s mt__25" data-rendert4s='{{ routes.search_url }}?view=link&q={{search_terms| url_encode}}&type=article,page'></div>
  {%- endif -%}
-{%- endif -%}
+{%- endif -%}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{{ save_js | replace: 'saved_amount':save }}"
+  to: "{{ save_js | replace: 'saved_amount', save }}"
+  position: 2201..2246
+{%- endcomment -%}

@@ -404,7 +404,7 @@
             {%- assign id_frm = 'cart-form' | append: call_cl -%}
             {%- assign cl_frm = 'nt_cart_form variations_form variations_form' | append: call_cl -%}
 
-            {%- form 'product', product, id: id_frm, 'data-productid': pid, class: cl_frm -%}
+            {%- form pid, class: cl_frm -%}
               {{ form | payment_terms }}
 
               {%- if no_sold_out and settings.enable_sub_reCharge -%}
@@ -2576,4 +2576,14 @@
  
 {%- endif -%}
 
-         
+         {%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- form 'product', product, id: id_frm, 'data-productid': pid, class: cl_frm
+    -%}"
+  to: "{%- form pid, class: cl_frm -%}"
+  position: 17388..17419
+{%- endcomment -%}

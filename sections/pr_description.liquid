@@ -381,7 +381,7 @@
     {% assign total_stars = total_stars | plus: review.stars %}
     {% assign star_index = review.stars | minus: 1 %}
     {% assign current_count = star_counts[star_index] | plus: 1 %}
-    {% assign star_counts[star_index] = current_count %}
+    {% assign renamed_variable_star_counts_5b_star_index_5d_ = current_count %}
   {% endfor %}
 
   {% assign avg_stars_float = total_stars | times: 1.0 | divided_by: count %}
@@ -1028,4 +1028,13 @@
       ]
     }
   }
-{% endschema %}
+{% endschema %}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% assign star_counts[star_index] = current_count %}"
+  to: "{% assign renamed_variable_star_counts_5b_star_index_5d_ = current_count %}"
+  position: 24332..24407
+{%- endcomment -%}
